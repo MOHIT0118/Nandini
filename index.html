@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+<title>For You, Nandini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" />
+<style>
+  /* ---------- PREMIUM MIDNIGHT PALETTE ---------- */
+  :root {
+    --bg: #0a0b10;
+    --bg-light: #13151c;
+    --text-main: #f4ece1;
+    --text-muted: #8b8c91;
+    --gold: #d4af37;
+    --gold-glow: rgba(212, 175, 55, 0.25);
+    --crimson: #7a1523;
+    --crimson-glow: rgba(122, 21, 35, 0.4);
+    --parchment: #f9f6f0;
+    
+    --serif: 'Cormorant Garamond', serif;
+    --script: 'Caveat', cursive;
+    --sans: 'Jost', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow-x: hidden; background: var(--bg); color: var(--text-main); font-family: var(--serif); }
+  
+  body {
+    background: radial-gradient(circle at 50% 0%, var(--bg-light) 0%, var(--bg) 70%);
+    min-height: 100vh; position: relative;
+  }
+  ::selection { background: var(--gold); color: #000; }
+
+  /* ---------- STARDUST & MOODY AMBIENCE ---------- */
+  .ambient { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .star {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+    opacity: 0; animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+  .glow-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.15; animation: breathe 10s ease-in-out infinite alternate; }
+  .glow-orb.top { width: 500px; height: 500px; background: var(--gold); top: -200px; left: -100px; }
+  .glow-orb.bottom { width: 600px; height: 600px; background: var(--crimson); bottom: -300px; right: -150px; animation-duration: 15s; }
+  @keyframes breathe { to { transform: scale(1.2) translate(30px, 20px); opacity: 0.25; } }
+
+  /* ---------- SCREENS OVERVIEW ---------- */
+  .stage { position: relative; z-index: 2; }
+  .screen {
+    position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; z-index: 2;
+  }
+  .screen.active { opacity: 1; pointer-events: auto; }
+  .screen.scroll { position: relative; min-height: 100vh; justify-content: flex-start; padding-top: 10vh; }
+
+  /* ---------- SCREEN 1: THE ELEGANT COVER ---------- */
+  #cover .wrap { text-align: center; }
+  
+  .floating-heart-btn {
+    width: 120px; height: 120px; margin: 0 auto 40px;
+    cursor: pointer; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .floating-heart-btn svg {
+    width: 65px; height: 65px; z-index: 2;
+    fill: var(--gold);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
+    animation: gentle-heartbeat 2.5s infinite;
+  }
+  .floating-heart-btn::before {
+    content: ''; position: absolute;
+    width: 70px; height: 70px; border-radius: 50%;
+    background: var(--crimson);
+    filter: blur(25px); opacity: 0.6; z-index: 1;
+    animation: gentle-heartbeat 2.5s infinite;
+  }
+  @keyframes gentle-heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+
+  h1.title { font-weight: 400; font-size: clamp(48px, 10vw, 90px); letter-spacing: 0.05em; color: var(--text-main); line-height: 1; }
+  h1.title .italic { font-style: italic; color: var(--gold); }
+  .subtitle { font-family: var(--sans); font-weight: 300; letter-spacing: 0.2em; font-size: 14px; color: var(--text-muted); margin-top: 20px; text-transform: uppercase; }
+  .hint-text { margin-top: 60px; font-family: var(--script); font-size: 24px; color: var(--gold); animation: fade-in-out 3s infinite; }
+  @keyframes fade-in-out { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    font-family: var(--sans); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 16px 36px; border-radius: 4px; border: 1px solid transparent;
+    cursor: pointer; font-size: 13px; transition: all 0.3s ease;
+  }
+  .btn-gold { background: var(--gold); color: #000; box-shadow: 0 10px 20px var(--gold-glow); }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4); }
+  .btn-outline { background: transparent; color: var(--text-main); border-color: rgba(244, 236, 225, 0.2); backdrop-filter: blur(5px); }
+
+  /* ---------- SCREEN 2: CONFESSION ASK ---------- */
+  #ask .card { max-width: 600px; text-align: center; }
+  .prompt { font-size: clamp(32px, 6vw, 50px); font-weight: 400; line-height: 1.3; margin-bottom: 50px; }
+  .prompt .highlight { font-style: italic; color: var(--gold); }
+  .row { display: flex; gap: 20px; justify-content: center; position: relative; min-height: 60px; width: 100%; max-width: 400px; margin: 0 auto; }
+  #noBtn { position: absolute; left: 60%; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.2s ease, top 0.2s ease; z-index: 10; }
+  
+  .taunt {
+    position: fixed; font-family: var(--script); color: var(--gold); font-size: 28px;
+    pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.3s ease, transform 0.5s ease; z-index: 11;
+  }
+  .taunt.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+  /* ---------- SCREEN 3: BURST ---------- */
+  #burst { background: var(--bg); }
+  #burst .big {
+    font-style: italic; font-size: clamp(50px, 8vw, 90px); color: var(--gold);
+    transform: scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+  }
+  #burst.active .big { transform: scale(1); }
+  .sparks { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .spark {
+    position: absolute; width: 1px; height: 30px; background: linear-gradient(var(--gold), transparent);
+    transform-origin: center bottom; opacity: 0;
+  }
+  #burst.active .spark { animation: shoot 1.5s ease-out forwards; }
+  @keyframes shoot {
+    0% { opacity: 0; transform: rotate(var(--r)) translateY(0) scaleY(0.2); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(var(--r)) translateY(-60vh) scaleY(1); }
+  }
+
+  /* ---------- SCREEN 4: THE CONFESSION ---------- */
+  .content-wrapper { max-width: 700px; margin: 0 auto; width: 100%; padding: 0 20px; }
+  
+  .video-container {
+    width: 100%; margin: 0 auto 60px; border-radius: 4px; padding: 8px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  }
+  .video-container video { width: 100%; display: block; border-radius: 2px; background: #000; }
+
+  .confession-text { margin-bottom: 100px; }
+  .confession-text p {
+    font-size: clamp(20px, 4vw, 24px); line-height: 1.8; color: var(--text-main);
+    margin-bottom: 28px; text-align: left; opacity: 0.9;
+  }
+  .confession-text .signature {
+    font-family: var(--script); font-size: clamp(34px, 6vw, 42px);
+    color: var(--gold); text-align: center; margin-top: 60px; display: block;
+    line-height: 1.2;
+  }
+
+  /* ---------- ENVELOPE ---------- */
+  .envelope-section { text-align: center; margin-bottom: 100px; }
+  .env-hint { font-family: var(--script); font-size: 28px; color: var(--text-muted); margin-bottom: 30px; }
+  
+  .envelope {
+    position: relative; width: min(90vw, 400px); aspect-ratio: 16/10; margin: 0 auto;
+    background: #1a1a1d; border-radius: 4px; cursor: pointer;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+    transition: transform 0.5s ease;
+  }
+  .envelope:hover { transform: translateY(-5px); }
+  .env-back { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; }
+  .env-back::before, .env-back::after {
+    content: ""; position: absolute; bottom: 0; width: 52%; height: 65%; background: #222226;
+    border-top: 1px solid rgba(255,255,255,0.03);
+  }
+  .env-back::before { left: 0; clip-path: polygon(0 100%, 100% 100%, 0 0); }
+  .env-back::after { right: 0; clip-path: polygon(0 100%, 100% 100%, 100% 0); }
+  
+  .flap {
+    position: absolute; top: 0; left: 0; right: 0; height: 65%;
+    background: #1e1e22; clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top; transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 3;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  }
+  .wax-seal {
+    position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+    width: 50px; height: 50px; border-radius: 50%; background: var(--crimson);
+    box-shadow: 0 4px 15px var(--crimson-glow), inset 0 -2px 6px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center; z-index: 4;
+    transition: opacity 0.5s ease;
+  }
+  .wax-seal::after { content: 'N'; font-family: var(--serif); font-style: italic; color: #fff; font-size: 24px; opacity: 0.8; }
+  
+  .letter-preview {
+    position: absolute; left: 8%; right: 8%; top: 10%; bottom: 10%;
+    background: var(--parchment); border-radius: 2px;
+    transform: translateY(0); opacity: 0; transition: transform 1.2s ease 0.2s, opacity 0.8s ease 0.2s; z-index: 2;
+  }
+  
+  .envelope.open .flap { transform: rotateX(180deg); }
+  .envelope.open .wax-seal { opacity: 0; }
+  .envelope.open .letter-preview { transform: translateY(-30%); opacity: 1; }
+
+  /* ---------- FULL LETTER MODAL ---------- */
+  .letter-modal {
+    position: fixed; inset: 0; background: rgba(10, 11, 16, 0.95); backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+    opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
+  }
+  .letter-modal.show { opacity: 1; pointer-events: auto; }
+  
+  .paper-canvas {
+    max-width: 600px; width: 100%; background: var(--parchment); color: #1a1a1a;
+    padding: 60px 40px; border-radius: 2px; position: relative; max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    transform: translateY(40px); transition: transform 1s cubic-bezier(0.2, 1, 0.3, 1);
+  }
+  .letter-modal.show .paper-canvas { transform: translateY(0); }
+  
+  .paper-canvas h3 { font-size: 32px; font-weight: 500; font-style: italic; margin-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; }
+  .paper-canvas p { font-size: 20px; line-height: 1.8; margin-bottom: 20px; color: #333; }
+  .paper-canvas .close-btn {
+    position: absolute; top: 20px; right: 20px; background: transparent; border: none;
+    font-size: 28px; color: #999; cursor: pointer; font-family: var(--sans);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Hidden Audio Player -->
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Background Elements -->
+<div class="ambient" id="ambient">
+  <div class="glow-orb top"></div>
+  <div class="glow-orb bottom"></div>
+  <!-- Stars injected via JS -->
+</div>
+
+<div class="stage">
+
+  <!-- SCREEN 1: COVER -->
+  <section class="screen active" id="cover" onclick="go('ask')">
+    <div class="wrap">
+      <div class="floating-heart-btn">
+        <!-- SVG Beating Heart -->
+        <svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+        </svg>
+      </div>
+      <h1 class="title">Nandini<span class="italic">.</span></h1>
+      <p class="subtitle">Something I needed to say</p>
+      <p class="hint-text">Tap the heart</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: CONFESSION ASK -->
+  <section class="screen" id="ask">
+    <div class="card">
+      <p class="prompt">I know you like me. If not, then press <span class="highlight">'No'</span> and leave.</p>
+      <div class="row">
+        <button class="btn btn-gold" onclick="yesClicked()">Okay fine, I do</button>
+        <button class="btn btn-outline" id="noBtn">No</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: BURST -->
+  <section class="screen" id="burst">
+    <div class="sparks" id="sparks"></div>
+    <div class="big">Thank you.</div>
+  </section>
+
+  <!-- SCREEN 4: VIDEO & CONFESSION LETTER -->
+  <section class="screen scroll" id="gallery" style="display:none">
+    <div class="content-wrapper">
+      
+      <!-- Video Player -->
+      <div class="video-container">
+        <video id="confessionVideo" src="trust-me.mp4" controls playsinline preload="metadata"></video>
+      </div>
+      
+      <!-- Main Confession Notes -->
+      <div class="confession-text">
+        <p>I'm not doing this casually. I'm fully invested in you.</p>
+        <p>I like you more than any girl I've known, and I genuinely believe nothing between us will ever go to waste. The only thing I want—whether this becomes a relationship or even just a friendship—is that we are always honest and truthful with each other.</p>
+        <p>Nandini, I'm ready to give my all to this. I just want one chance. One genuine chance to show you that I'm serious about you and that my intentions are real.</p>
+        <p>You don't have to be completely sure about me right now. Just give us a chance to know each other, and let things speak for themselves.</p>
+        <p>If after that you still feel I'm not the person you want, I will respect your decision. It will hurt, but at least I'll know I gave it everything I had.</p>
+        <p>You can leave if you want to, but before you do, just give me one chance.</p>
+        <span class="signature">And remember one thing — I love you more than you probably know.</span>
+      </div>
+
+      <!-- Secret Envelope -->
+      <div class="envelope-section">
+        <p class="env-hint">One last thing...</p>
+        <div class="envelope" id="env" onclick="openEnvelope()">
+          <div class="env-back"></div>
+          <div class="letter-preview"></div>
+          <div class="flap"></div>
+          <div class="wax-seal"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- Letter Reading Modal -->
+<div class="letter-modal" id="letterPane">
+  <div class="paper-canvas">
+    <button class="close-btn" onclick="closeLetter()">×</button>
+    <h3>To Nandini,</h3>
+    <p>Thank you for taking the time to read this and hear me out. I meant every single word.</p>
+    <p>I know taking a leap like this can be scary, but I promise I'm here to make it worth it. No pressure, no rush—just us taking it one day at a time.</p>
+    <p>Whatever happens next, I'm glad I finally told you.</p>
+  </div>
+</div>
+
+<!-- Taunt Playfield -->
+<div class="playfield" id="playfield"></div>
+
+<script>
+  /* ---------- GENERATE BACKGROUND STARS ---------- */
+  (function(){
+    const layer = document.getElementById('ambient');
+    for(let i=0; i<40; i++){
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 3 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.animationDuration = (10 + Math.random() * 20) + 's';
+      star.style.animationDelay = (Math.random() * -20) + 's';
+      layer.appendChild(star);
+    }
+  })();
+
+  /* ---------- NAVIGATION ---------- */
+  const screens = ['cover','ask','burst','gallery'];
+  function go(id){
+    screens.forEach(s => {
+      const el = document.getElementById(s);
+      if(!el) return;
+      if(s === id){
+        if(s === 'gallery') { el.style.display = 'flex'; requestAnimationFrame(() => el.classList.add('active')); }
+        else el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+        if(s === 'gallery') { setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 1000); }
+      }
+    });
+    if(id === 'burst') triggerBurst();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  /* ---------- DODGING 'NO' BUTTON ---------- */
+  const noBtn = document.getElementById('noBtn');
+  const playfield = document.getElementById('playfield');
+  const taunts = ["Are you sure?", "Think again.", "Not an option.", "I'm serious.", "Try 'Yes'."];
+  let tauntEl = null;
+
+  function dodge(e){
+    const pad = 30;
+    const w = noBtn.offsetWidth, h = noBtn.offsetHeight;
+    const maxX = window.innerWidth - w - pad*2;
+    const maxY = window.innerHeight - h - pad*2;
+    let x, y, tries = 0;
+    do {
+      x = pad + Math.random() * maxX;
+      y = pad + Math.random() * maxY;
+      tries++;
+    } while(e && Math.hypot(x+w/2 - (e.clientX||0), y+h/2 - (e.clientY||0)) < 150 && tries < 10);
+    
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+    showTaunt(x + w/2, y - 20);
+  }
+
+  function showTaunt(x, y){
+    if(!tauntEl){ tauntEl = document.createElement('div'); tauntEl.className = 'taunt'; document.body.appendChild(tauntEl); }
+    tauntEl.textContent = taunts[Math.floor(Math.random() * taunts.length)];
+    tauntEl.style.left = Math.max(80, Math.min(window.innerWidth-80, x)) + 'px';
+    tauntEl.style.top = Math.max(40, y) + 'px';
+    tauntEl.classList.add('show');
+    clearTimeout(tauntEl._t);
+    tauntEl._t = setTimeout(() => tauntEl.classList.remove('show'), 1000);
+  }
+
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(e.touches[0]); }, {passive:false});
+  noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(e); });
+
+  /* ---------- YES CLICKED & MUSIC ---------- */
+  function yesClicked(){
+    const music = document.getElementById('bgMusic');
+    if(music) {
+      music.volume = 0;
+      music.play().catch(e => console.log("Audio blocked:", e));
+      let vol = 0;
+      const fade = setInterval(() => {
+        if(vol < 0.7) { vol += 0.05; music.volume = vol; }
+        else clearInterval(fade);
+      }, 100);
+    }
+    go('burst');
+    setTimeout(() => { go('gallery'); }, 3000);
+  }
+
+  /* ---------- MUSIC PAUSE WHEN VIDEO PLAYS ---------- */
+  const video = document.getElementById('confessionVideo');
+  const bgMusic = document.getElementById('bgMusic');
+
+  if(video && bgMusic) {
+    video.addEventListener('play', () => { bgMusic.pause(); });
+    video.addEventListener('pause', () => { bgMusic.play(); });
+    video.addEventListener('ended', () => { bgMusic.play(); });
+  }
+
+  /* ---------- BURST SPARKS ---------- */
+  function triggerBurst(){
+    const s = document.getElementById('sparks');
+    s.innerHTML = '';
+    for(let i=0; i<60; i++){
+      const el = document.createElement('div');
+      el.className = 'spark';
+      const angle = (360/60) * i;
+      el.style.setProperty('--r', angle + 'deg');
+      el.style.animationDelay = (Math.random() * 0.3) + 's';
+      s.appendChild(el);
+    }
+  }
+
+  /* ---------- ENVELOPE OPEN ---------- */
+  function openEnvelope(){
+    const env = document.getElementById('env');
+    env.classList.add('open');
+    setTimeout(() => { document.getElementById('letterPane').classList.add('show'); }, 1000);
+  }
+  function closeLetter(){ document.getElementById('letterPane').classList.remove('show'); }
+
+</script>
+</body>
+</html>
