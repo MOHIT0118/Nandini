@@ -52,7 +52,6 @@
   .glow-orb.bottom { width: 600px; height: 600px; background: var(--crimson); bottom: -300px; right: -150px; animation-duration: 18s; }
   @keyframes breathe { to { transform: scale(1.1) translate(40px, 30px); opacity: 0.3; } }
 
-  /* Cinematic Vignette Overlay */
   .vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 44;
     box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8);
@@ -76,36 +75,6 @@
     100% { transform: translate(0,0); }
   }
   @media (prefers-reduced-motion: reduce) { .grain-overlay { animation: none; } }
-
-  /* ---------- SECRET HOLD-TO-REVEAL ---------- */
-  .secret-dot {
-    position: fixed; right: 20px; bottom: 20px; width: 9px; height: 9px;
-    border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px var(--gold-glow);
-    opacity: 0.22; z-index: 70; cursor: pointer;
-    transition: opacity 0.4s ease, transform 0.4s ease; touch-action: none;
-  }
-  .secret-dot:hover { opacity: 0.45; }
-  .secret-dot.charging { animation: dot-charge 1.3s cubic-bezier(0.2,0.8,0.2,1) forwards; }
-  @keyframes dot-charge {
-    0%   { box-shadow: 0 0 6px var(--gold-glow); transform: scale(1); opacity: 0.4; }
-    100% { box-shadow: 0 0 25px var(--gold), 0 0 60px var(--gold-glow); transform: scale(2.2); opacity: 1; }
-  }
-
-  .secret-overlay {
-    position: fixed; inset: 0; background: rgba(4,4,7,0.92);
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; padding: 40px; z-index: 68;
-    opacity: 0; pointer-events: none; transition: opacity 0.9s ease;
-  }
-  .secret-overlay.show { opacity: 1; }
-  .secret-message {
-    font-family: var(--script); color: var(--gold);
-    font-size: clamp(28px, 6.5vw, 46px); max-width: 520px; line-height: 1.4;
-    text-shadow: 0 0 30px var(--gold-glow);
-    opacity: 0; transform: translateY(14px) scale(0.97);
-    transition: opacity 1s ease 0.25s, transform 1s ease 0.25s;
-  }
-  .secret-overlay.show .secret-message { opacity: 1; transform: translateY(0) scale(1); }
 
   /* ---------- SCREENS OVERVIEW ---------- */
   .stage { position: relative; z-index: 2; }
@@ -176,12 +145,9 @@
   /* ---------- SCREEN 4: THE CONFESSION ---------- */
   .content-wrapper { max-width: 700px; margin: 0 auto; width: 100%; padding: 0 20px; }
 
-  /* 9:16 Video Container Optimization */
   .video-container {
-    width: 100%; max-width: 400px; /* Limits width on larger screens to maintain portrait vibe */
-    margin: 0 auto 60px; border-radius: 4px; padding: 8px;
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    width: 100%; max-width: 400px; margin: 0 auto 60px; border-radius: 4px; padding: 8px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6);
   }
   .video-container video { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; border-radius: 2px; background: #000; }
 
@@ -189,7 +155,6 @@
   .confession-text p { font-size: clamp(20px, 4vw, 24px); line-height: 1.8; color: var(--text-main); margin-bottom: 28px; text-align: left; opacity: 0.9; min-height: 1.8em; }
   .confession-text .signature { font-family: var(--script); font-size: clamp(34px, 6vw, 42px); color: var(--gold); text-align: center; margin-top: 60px; display: block; line-height: 1.2; min-height: 1.4em; }
 
-  /* Typewriter caret */
   .caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -0.15em; background: var(--gold); animation: caret-blink 0.85s steps(1) infinite; }
   @keyframes caret-blink { 50% { opacity: 0; } }
 
@@ -227,17 +192,27 @@
   /* ---------- PHOTO & LYRIC MODAL ---------- */
   .photo-modal {
     position: fixed; inset: 0; background: rgba(10, 11, 16, 0.98); backdrop-filter: blur(15px);
-    display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; overflow: hidden;
   }
   .photo-modal.show { opacity: 1; pointer-events: auto; }
   
   .polaroid-card {
     position: relative; width: min(90vw, 380px); aspect-ratio: 9/16; background: #000; border: 4px solid var(--parchment); border-radius: 8px;
     box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.2); transform: translateY(60px) scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 10;
+    cursor: pointer; touch-action: none;
   }
   .photo-modal.show .polaroid-card { transform: translateY(0) scale(1); }
+  .polaroid-card.holding { transform: scale(0.95) !important; transition: transform 0.3s ease; } /* Squeeze effect when holding */
   .polaroid-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; opacity: 0.85; transition: opacity 0.5s ease; }
   
+  /* Hold to reveal hint */
+  .hold-hint {
+    position: absolute; bottom: 40px; font-family: var(--sans); color: rgba(255,255,255,0.6);
+    font-size: 14px; letter-spacing: 2px; text-transform: uppercase; pointer-events: none; opacity: 0; z-index: 51;
+  }
+  .photo-modal.show .hold-hint { animation: fade-hint 4s ease forwards 1.5s; }
+  @keyframes fade-hint { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+
   /* BEAUTIFUL FLOATING LYRICS TYPOGRAPHY */
   #lyrics-container { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
   .edit-lyric { position: absolute; white-space: nowrap; text-align: center; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 25px currentColor; font-weight: 500; opacity: 0; animation: float-lyric 3.5s cubic-bezier(0.2, 1, 0.4, 1) forwards; }
@@ -250,6 +225,24 @@
   }
 
   .close-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; font-size: 28px; color: #fff; cursor: pointer; font-family: var(--sans); z-index: 51; }
+
+  /* ---------- SECRET HOLD-TO-REVEAL OVERLAY ---------- */
+  .secret-overlay {
+    position: fixed; inset: 0; background: rgba(4,4,7,0.96);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 40px; z-index: 68;
+    opacity: 0; pointer-events: none; transition: opacity 0.9s ease;
+  }
+  .secret-overlay.show { opacity: 1; }
+  .secret-message {
+    font-family: var(--script); color: var(--gold);
+    font-size: clamp(28px, 6.5vw, 46px); max-width: 520px; line-height: 1.4;
+    text-shadow: 0 0 30px var(--gold-glow);
+    opacity: 0; transform: translateY(14px) scale(0.97);
+    transition: opacity 1s ease 0.25s, transform 1s ease 0.25s;
+  }
+  .secret-overlay.show .secret-message { opacity: 1; transform: translateY(0) scale(1); }
+
 </style>
 </head>
 <body>
@@ -336,19 +329,21 @@
   </section>
 </div>
 
-<!-- Photo & Lyric Modal -->
+<!-- Photo & Lyric Modal (Now contains the Hold Trigger) -->
 <div class="photo-modal" id="photoPane">
   <button class="close-btn" onclick="closePhoto()">×</button>
-  <div class="polaroid-card">
+  
+  <div class="polaroid-card" id="secretTrigger">
     <img src="nandini.jpg" alt="You">
   </div>
+  
   <div id="lyrics-container"></div>
+  <div class="hold-hint">Press and hold</div>
 </div>
 
 <div class="playfield" id="playfield"></div>
 
-<!-- Hold-to-reveal secret -->
-<div class="secret-dot" id="secretDot" aria-hidden="true"></div>
+<!-- Hold-to-reveal overlay -->
 <div class="secret-overlay" id="secretOverlay">
   <p class="secret-message">I've wanted to tell you this since the day we met.</p>
 </div>
@@ -614,37 +609,37 @@
     }, 3500);
   }
 
-  /* ---------- HOLD-TO-REVEAL SECRET ---------- */
+  /* ---------- HOLD-TO-REVEAL SECRET (ON PHOTO) ---------- */
   (function(){
-    const dot = document.getElementById('secretDot');
+    const trigger = document.getElementById('secretTrigger');
     const overlay = document.getElementById('secretOverlay');
     let holdTimer = null;
     let revealed = false;
 
     function startHold(e){
       e.preventDefault();
-      dot.classList.add('charging');
+      trigger.classList.add('holding'); // Adds a slight squeeze effect
       holdTimer = setTimeout(() => {
         revealed = true;
         overlay.classList.add('show');
-        if(bgMusic && !bgMusic.paused) bgMusic.volume = 0.12;
-      }, 1300);
+        if(song2 && !song2.paused) song2.volume = 0.15; // Dims the music
+      }, 1000); // 1 second hold to reveal
     }
 
     function endHold(){
       clearTimeout(holdTimer);
-      dot.classList.remove('charging');
+      trigger.classList.remove('holding');
       if(revealed){
         overlay.classList.remove('show');
-        if(bgMusic && !bgMusic.paused) bgMusic.volume = 0.7;
+        if(song2 && !song2.paused) song2.volume = 1; // Brings music back
         revealed = false;
       }
     }
 
-    dot.addEventListener('pointerdown', startHold);
-    dot.addEventListener('pointerup', endHold);
-    dot.addEventListener('pointerleave', endHold);
-    dot.addEventListener('pointercancel', endHold);
+    trigger.addEventListener('pointerdown', startHold);
+    window.addEventListener('pointerup', endHold);
+    trigger.addEventListener('pointerleave', endHold);
+    trigger.addEventListener('pointercancel', endHold);
   })();
 </script>
 </body>
