@@ -6,7 +6,7 @@
 <title>For You, Nandini</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;700&display=swap" />
 <style>
   /* ---------- PREMIUM MIDNIGHT PALETTE ---------- */
   :root {
@@ -15,9 +15,9 @@
     --text-main: #f4ece1;
     --text-muted: #8b8c91;
     --gold: #d4af37;
-    --gold-glow: rgba(212, 175, 55, 0.25);
+    --gold-glow: rgba(212, 175, 55, 0.35);
     --crimson: #7a1523;
-    --crimson-glow: rgba(122, 21, 35, 0.4);
+    --crimson-glow: rgba(122, 21, 35, 0.45);
     --parchment: #f9f6f0;
     
     --serif: 'Cormorant Garamond', serif;
@@ -65,34 +65,37 @@
   #cover .wrap { text-align: center; }
   
   .floating-heart-btn {
-    width: 120px; height: 120px; margin: 0 auto 40px;
+    width: 120px; height: 120px; margin: 0 auto 35px;
     cursor: pointer; position: relative;
     display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s ease;
   }
+  .floating-heart-btn:active { transform: scale(0.92); }
+  
   .floating-heart-btn svg {
-    width: 65px; height: 65px; z-index: 2;
+    width: 70px; height: 70px; z-index: 2;
     fill: var(--gold);
-    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
-    animation: gentle-heartbeat 2.5s infinite;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.75));
+    animation: gentle-heartbeat 2.4s infinite ease-in-out;
   }
   .floating-heart-btn::before {
     content: ''; position: absolute;
-    width: 70px; height: 70px; border-radius: 50%;
+    width: 80px; height: 80px; border-radius: 50%;
     background: var(--crimson);
-    filter: blur(25px); opacity: 0.6; z-index: 1;
-    animation: gentle-heartbeat 2.5s infinite;
+    filter: blur(28px); opacity: 0.65; z-index: 1;
+    animation: gentle-heartbeat 2.4s infinite ease-in-out;
   }
   @keyframes gentle-heartbeat {
     0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.15); }
+    15% { transform: scale(1.18); }
     30% { transform: scale(1); }
-    45% { transform: scale(1.15); }
+    45% { transform: scale(1.18); }
   }
 
   h1.title { font-weight: 400; font-size: clamp(48px, 10vw, 90px); letter-spacing: 0.05em; color: var(--text-main); line-height: 1; }
   h1.title .italic { font-style: italic; color: var(--gold); }
   .subtitle { font-family: var(--sans); font-weight: 300; letter-spacing: 0.2em; font-size: 14px; color: var(--text-muted); margin-top: 20px; text-transform: uppercase; }
-  .hint-text { margin-top: 60px; font-family: var(--script); font-size: 24px; color: var(--gold); animation: fade-in-out 3s infinite; }
+  .hint-text { margin-top: 50px; font-family: var(--script); font-size: 24px; color: var(--gold); animation: fade-in-out 3s infinite; }
   @keyframes fade-in-out { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
   /* ---------- BUTTONS ---------- */
@@ -193,62 +196,89 @@
   }
   .wax-seal::after { content: 'N'; font-family: var(--serif); font-style: italic; color: #fff; font-size: 24px; opacity: 0.8; }
   
-  .letter-preview {
-    position: absolute; left: 8%; right: 8%; top: 10%; bottom: 10%;
-    background: var(--parchment); border-radius: 2px;
+  .photo-preview {
+    position: absolute; left: 15%; right: 15%; top: 5%; bottom: 5%;
+    background: #000; border-radius: 2px;
     transform: translateY(0); opacity: 0; transition: transform 1.2s ease 0.2s, opacity 0.8s ease 0.2s; z-index: 2;
   }
   
   .envelope.open .flap { transform: rotateX(180deg); }
   .envelope.open .wax-seal { opacity: 0; }
-  .envelope.open .letter-preview { transform: translateY(-30%); opacity: 1; }
+  .envelope.open .photo-preview { transform: translateY(-30%); opacity: 1; }
 
-  /* ---------- FULL LETTER MODAL ---------- */
-  .letter-modal {
-    position: fixed; inset: 0; background: rgba(10, 11, 16, 0.95); backdrop-filter: blur(10px);
+  /* ---------- NEW: PHOTO & LYRIC MODAL ---------- */
+  .photo-modal {
+    position: fixed; inset: 0; background: rgba(10, 11, 16, 0.98); backdrop-filter: blur(15px);
     display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
-    opacity: 0; pointer-events: none; transition: opacity 0.8s ease;
+    opacity: 0; pointer-events: none; transition: opacity 0.8s ease; overflow: hidden;
   }
-  .letter-modal.show { opacity: 1; pointer-events: auto; }
+  .photo-modal.show { opacity: 1; pointer-events: auto; }
   
-  .paper-canvas {
-    max-width: 600px; width: 100%; background: var(--parchment); color: #1a1a1a;
-    padding: 60px 40px; border-radius: 2px; position: relative; max-height: 85vh; overflow-y: auto;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-    transform: translateY(40px); transition: transform 1s cubic-bezier(0.2, 1, 0.3, 1);
+  .polaroid-card {
+    position: relative;
+    width: min(90vw, 380px);
+    aspect-ratio: 9/16;
+    background: #000;
+    border: 4px solid var(--parchment);
+    border-radius: 8px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.2);
+    transform: translateY(60px) scale(0.9); 
+    transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+    z-index: 10;
   }
-  .letter-modal.show .paper-canvas { transform: translateY(0); }
+  .photo-modal.show .polaroid-card { transform: translateY(0) scale(1); }
   
-  .paper-canvas h3 { font-size: 32px; font-weight: 500; font-style: italic; margin-bottom: 30px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; }
-  .paper-canvas p { font-size: 20px; line-height: 1.8; margin-bottom: 20px; color: #333; }
-  .paper-canvas .close-btn {
-    position: absolute; top: 20px; right: 20px; background: transparent; border: none;
-    font-size: 28px; color: #999; cursor: pointer; font-family: var(--sans);
+  .polaroid-card img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 4px;
+    opacity: 0.85; transition: opacity 0.5s ease;
+  }
+  
+  /* Edit Style Typography */
+  #lyrics-container {
+    position: absolute; inset: 0; pointer-events: none; z-index: 20;
+  }
+  .edit-lyric {
+    position: absolute;
+    transform-origin: center;
+    white-space: nowrap;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.4);
+    animation: pop-in-out 2.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+  }
+  @keyframes pop-in-out {
+    0% { transform: scale(0.2) translate(-50%, -50%) rotate(var(--rot)); opacity: 0; }
+    15% { transform: scale(1.1) translate(-50%, -50%) rotate(var(--rot)); opacity: 1; }
+    25% { transform: scale(1) translate(-50%, -50%) rotate(var(--rot)); }
+    75% { transform: scale(1) translate(-50%, -60%) rotate(var(--rot)); opacity: 1; }
+    100% { transform: scale(1.1) translate(-50%, -80%) rotate(var(--rot)); opacity: 0; filter: blur(4px); }
   }
 
+  .close-btn {
+    position: absolute; top: 20px; right: 20px; background: transparent; border: none;
+    font-size: 28px; color: #fff; cursor: pointer; font-family: var(--sans); z-index: 51;
+  }
 </style>
 </head>
 <body>
 
-<!-- Hidden Audio Player -->
+<!-- Audio Players -->
 <audio id="bgMusic" loop>
   <source src="song.mp3" type="audio/mpeg">
 </audio>
+<audio id="song2">
+  <source src="song2.mp3" type="audio/mpeg">
+</audio>
 
-<!-- Background Elements -->
+<!-- Background Ambient Elements -->
 <div class="ambient" id="ambient">
   <div class="glow-orb top"></div>
   <div class="glow-orb bottom"></div>
-  <!-- Stars injected via JS -->
 </div>
 
 <div class="stage">
-
   <!-- SCREEN 1: COVER -->
   <section class="screen active" id="cover" onclick="go('ask')">
     <div class="wrap">
       <div class="floating-heart-btn">
-        <!-- SVG Beating Heart -->
         <svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg">
           <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
         </svg>
@@ -301,28 +331,26 @@
         <p class="env-hint">One last thing...</p>
         <div class="envelope" id="env" onclick="openEnvelope()">
           <div class="env-back"></div>
-          <div class="letter-preview"></div>
+          <div class="photo-preview"></div>
           <div class="flap"></div>
           <div class="wax-seal"></div>
         </div>
       </div>
-
     </div>
   </section>
 </div>
 
-<!-- Letter Reading Modal -->
-<div class="letter-modal" id="letterPane">
-  <div class="paper-canvas">
-    <button class="close-btn" onclick="closeLetter()">×</button>
-    <h3>To Nandini,</h3>
-    <p>Thank you for taking the time to read this and hear me out. I meant every single word.</p>
-    <p>I know taking a leap like this can be scary, but I promise I'm here to make it worth it. No pressure, no rush—just us taking it one day at a time.</p>
-    <p>Whatever happens next, I'm glad I finally told you.</p>
+<!-- Photo & Lyric Modal -->
+<div class="photo-modal" id="photoPane">
+  <button class="close-btn" onclick="closePhoto()">×</button>
+  
+  <div class="polaroid-card">
+    <img src="nandini.jpg" alt="You">
   </div>
+  
+  <div id="lyrics-container"></div>
 </div>
 
-<!-- Taunt Playfield -->
 <div class="playfield" id="playfield"></div>
 
 <script>
@@ -399,14 +427,17 @@
   noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(e); });
 
   /* ---------- YES CLICKED & MUSIC ---------- */
+  const bgMusic = document.getElementById('bgMusic');
+  const song2 = document.getElementById('song2');
+  const video = document.getElementById('confessionVideo');
+
   function yesClicked(){
-    const music = document.getElementById('bgMusic');
-    if(music) {
-      music.volume = 0;
-      music.play().catch(e => console.log("Audio blocked:", e));
+    if(bgMusic) {
+      bgMusic.volume = 0;
+      bgMusic.play().catch(e => console.log("Audio blocked:", e));
       let vol = 0;
       const fade = setInterval(() => {
-        if(vol < 0.7) { vol += 0.05; music.volume = vol; }
+        if(vol < 0.7) { vol += 0.05; bgMusic.volume = vol; }
         else clearInterval(fade);
       }, 100);
     }
@@ -414,17 +445,12 @@
     setTimeout(() => { go('gallery'); }, 3000);
   }
 
-  /* ---------- MUSIC PAUSE WHEN VIDEO PLAYS ---------- */
-  const video = document.getElementById('confessionVideo');
-  const bgMusic = document.getElementById('bgMusic');
-
   if(video && bgMusic) {
     video.addEventListener('play', () => { bgMusic.pause(); });
     video.addEventListener('pause', () => { bgMusic.play(); });
     video.addEventListener('ended', () => { bgMusic.play(); });
   }
 
-  /* ---------- BURST SPARKS ---------- */
   function triggerBurst(){
     const s = document.getElementById('sparks');
     s.innerHTML = '';
@@ -438,14 +464,213 @@
     }
   }
 
-  /* ---------- ENVELOPE OPEN ---------- */
+  /* ---------- ENVELOPE, PHOTO, AND TIMED LYRICS ---------- */
+  let currentLyricIndex = 0;
+
+  // The Exact Timestamps provided by you!
+  const timedLyrics = [
+    { time: 0, text: "Mujhe" },
+    { time: 1, text: "jo" },
+    { time: 2, text: "hua hai" },
+    { time: 3, text: "iski" },
+    { time: 4, text: "na dawa hai" },
+    { time: 5, text: "kisi ne" },
+    { time: 6, text: "chuha" },
+    { time: 7, text: "hai dil" },
+    { time: 8, text: "kiski" },
+    { time: 9, text: "kiski" },
+    { time: 10, text: "nazar ka hai" },
+    { time: 11, text: "asar" },
+    { time: 12, text: "puche jo" },
+    { time: 13, text: "koi toh" },
+    { time: 14, text: "tera" },
+    { time: 15, text: "naam looo" },
+    { time: 16, text: "tera naam loo" },
+    { time: 17, text: "looo" },
+    { time: 18, text: "puche" },
+    { time: 19, text: "jo koi" },
+    { time: 20, text: "tera naam" },
+    { time: 21, text: "looo" },
+    { time: 22, text: "tera naam" },
+    { time: 23, text: "tera naam" },
+    { time: 24, text: "mai" },
+    { time: 25, text: "kehdoon sabhi" },
+    { time: 26, text: "ko" },
+    { time: 27, text: "ki tera hi" },
+    { time: 28, text: "hai ye" },
+    { time: 29, text: "asar" }
+  ];
+
   function openEnvelope(){
     const env = document.getElementById('env');
     env.classList.add('open');
-    setTimeout(() => { document.getElementById('letterPane').classList.add('show'); }, 1000);
-  }
-  function closeLetter(){ document.getElementById('letterPane').classList.remove('show'); }
+    
+    if(bgMusic) bgMusic.pause();
+    if(song2) {
+      song2.currentTime = 0;
+      song2.volume = 1;
+      song2.play().catch(e => console.log("Song 2 blocked", e));
+    }
 
+    currentLyricIndex = 0; // Reset lyrics
+
+    setTimeout(() => { 
+      document.getElementById('photoPane').classList.add('show'); 
+    }, 1000);
+  }
+
+  function closePhoto(){ 
+    document.getElementById('photoPane').classList.remove('show');
+    document.getElementById('lyrics-container').innerHTML = ''; // clear words
+    currentLyricIndex = 0; // Reset index
+    if(song2) song2.pause();
+    if(bgMusic) bgMusic.play(); 
+  }
+
+  // Lyric Spawning Logic
+  if (song2) {
+    song2.addEventListener('timeupdate', () => {
+      if (currentLyricIndex < timedLyrics.length) {
+        if (song2.currentTime >= timedLyrics[currentLyricIndex].time) {
+          spawnLyric(timedLyrics[currentLyricIndex].text);
+          currentLyricIndex++;
+        }
+      }
+    });
+  }
+
+  function spawnLyric(text) {
+    const container = document.getElementById('lyrics-container');
+    const word = document.createElement('div');
+    word.className = 'edit-lyric';
+    
+    word.innerText = Math.random() > 0.5 ? text.toUpperCase() : text.toLowerCase();
+    
+    const fonts = ['var(--script)', 'var(--serif)', 'var(--sans)'];
+    word.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
+    
+    const colors = ['#fff', 'var(--gold)', '#f3cad2', 'var(--crimson)'];
+    word.style.color = colors[Math.floor(Math.random() * colors.length)];
+    
+    word.style.fontSize = (Math.random() * 25 + 35) + 'px'; // Slightly smaller so it fits well
+    word.style.setProperty('--rot', (Math.random() * 40 - 20) + 'deg');
+    
+    const xPos = Math.random() > 0.5 ? (Math.random() * 25 + 5) : (Math.random() * 25 + 70); 
+    const yPos = (Math.random() * 80 + 10);
+    word.style.left = xPos + 'vw';
+    word.style.top = yPos + 'vh';
+    
+    container.appendChild(word);
+    
+    setTimeout(() => {
+      if(word.parentNode) word.parentNode.removeChild(word);
+    }, 2500);
+  }
+</script>
+</body>
+</html>
+  .photo-modal { position: fixed; inset: 0; background: rgba(10, 11, 16, 0.98); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.5s; z-index: 100; }
+  .photo-modal.show { opacity: 1; pointer-events: auto; }
+  .polaroid-card { width: 300px; height: 500px; border: 5px solid var(--parchment); background: #000; overflow: hidden; }
+  .polaroid-card img { width: 100%; height: 100%; object-fit: cover; }
+  #lyrics-container { position: absolute; inset: 0; pointer-events: none; }
+  .edit-lyric { position: absolute; font-size: 40px; font-weight: bold; animation: pop 2s forwards; }
+  @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop><source src="song.mp3" type="audio/mpeg"></audio>
+<audio id="song2"><source src="song2.mp3" type="audio/mpeg"></audio>
+
+<div class="ambient"><div class="glow-orb top"></div><div class="glow-orb bottom"></div></div>
+
+<div class="stage">
+  <section class="screen active" id="cover" onclick="go('ask')">
+    <div class="wrap">
+      <div class="floating-heart-btn"><svg viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg></div>
+      <h1 class="title">Nandini<span class="italic">.</span></h1>
+      <p class="hint-text">Tap the heart</p>
+    </div>
+  </section>
+
+  <section class="screen" id="ask">
+    <div class="card">
+      <p class="prompt">I know you like me. If not, then press <span class="highlight">'No'</span>.</p>
+      <div class="row"><button class="btn btn-gold" onclick="yesClicked()">Okay fine, I do</button><button class="btn btn-outline" id="noBtn">No</button></div>
+    </div>
+  </section>
+
+  <section class="screen" id="burst"><div class="big">Thank you.</div></section>
+
+  <section class="screen scroll" id="gallery" style="display:none">
+    <div class="content-wrapper">
+      <div class="video-container"><video id="confessionVideo" src="trust-me.mp4" controls playsinline></video></div>
+      <div class="confession-text">
+        <p>I'm not doing this casually. I'm fully invested in you...</p>
+        <span class="signature">And remember one thing — I love you.</span>
+      </div>
+      <div class="envelope-section">
+        <div class="envelope" id="env" onclick="openEnvelope()"><div class="wax-seal">N</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="photo-modal" id="photoPane">
+  <div class="polaroid-card"><img src="nandini.jpg" alt="You"></div>
+  <div id="lyrics-container"></div>
+</div>
+
+<script>
+  function go(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id==='gallery') document.getElementById('gallery').style.display='flex';
+  }
+
+  const timedLyrics = [
+    { time: 0, text: "Mujhe" }, { time: 1, text: "jo" }, { time: 2, text: "hua hai" },
+    { time: 3, text: "iski" }, { time: 4, text: "na dawa hai" }, { time: 5, text: "kisi ne" },
+    { time: 6, text: "chuha" }, { time: 7, text: "hai dil" }, { time: 8, text: "kiski" },
+    { time: 9, text: "kiski" }, { time: 10, text: "nazar ka hai" }, { time: 11, text: "asar" },
+    { time: 12, text: "puche jo" }, { time: 13, text: "koi toh" }, { time: 14, text: "tera" },
+    { time: 15, text: "naam looo" }, { time: 16, text: "tera naam loo" }, { time: 17, text: "looo" },
+    { time: 18, text: "puche" }, { time: 19, text: "jo koi" }, { time: 20, text: "tera naam" },
+    { time: 21, text: "looo" }, { time: 22, text: "tera naam" }, { time: 23, text: "tera naam" },
+    { time: 24, text: "mai" }, { time: 25, text: "kehdoon sabhi" }, { time: 26, text: "ko" },
+    { time: 27, text: "ki tera hi" }, { time: 28, text: "hai ye" }, { time: 29, text: "asar" }
+  ];
+
+  function openEnvelope(){
+    document.getElementById('photoPane').classList.add('show');
+    document.getElementById('bgMusic').pause();
+    const s2 = document.getElementById('song2');
+    s2.play();
+    s2.addEventListener('timeupdate', () => {
+      timedLyrics.forEach(l => {
+        if(Math.abs(s2.currentTime - l.time) < 0.2) spawnLyric(l.text);
+      });
+    });
+  }
+
+  function spawnLyric(t) {
+    const c = document.getElementById('lyrics-container');
+    const w = document.createElement('div');
+    w.className = 'edit-lyric';
+    w.innerText = t;
+    w.style.left = (Math.random()*60+20) + '%';
+    w.style.top = (Math.random()*60+20) + '%';
+    w.style.color = ['#d4af37','#f3cad2','#fff'][Math.floor(Math.random()*3)];
+    c.appendChild(w);
+    setTimeout(()=>w.remove(), 2000);
+  }
+
+  function yesClicked(){
+    document.getElementById('bgMusic').play();
+    go('burst');
+    setTimeout(()=>go('gallery'), 2000);
+  }
 </script>
 </body>
 </html>
