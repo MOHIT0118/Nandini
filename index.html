@@ -15,7 +15,7 @@
     --text-main: #f4ece1;
     --text-muted: #8b8c91;
     --gold: #d4af37;
-    --gold-glow: rgba(212, 175, 55, 0.35);
+    --gold-glow: rgba(212, 175, 55, 0.4);
     --crimson: #7a1523;
     --crimson-glow: rgba(122, 21, 35, 0.45);
     --parchment: #f9f6f0;
@@ -34,23 +34,23 @@
   }
   ::selection { background: var(--gold); color: #000; }
 
-  /* ---------- STARDUST & MOODY AMBIENCE ---------- */
+  /* ---------- UPGRADED GOLDEN STARDUST ---------- */
   .ambient { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
   .star {
-    position: absolute; width: 4px; height: 4px; border-radius: 50%;
-    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+    position: absolute; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 8px var(--gold);
     opacity: 0; animation: float-up linear infinite;
   }
   @keyframes float-up {
-    0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
-    20% { opacity: 0.6; }
-    80% { opacity: 0.6; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    0% { transform: translateY(110vh) translateX(0px); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
   }
-  .glow-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.15; animation: breathe 10s ease-in-out infinite alternate; }
+  .glow-orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.2; animation: breathe 12s ease-in-out infinite alternate; }
   .glow-orb.top { width: 500px; height: 500px; background: var(--gold); top: -200px; left: -100px; }
-  .glow-orb.bottom { width: 600px; height: 600px; background: var(--crimson); bottom: -300px; right: -150px; animation-duration: 15s; }
-  @keyframes breathe { to { transform: scale(1.2) translate(30px, 20px); opacity: 0.25; } }
+  .glow-orb.bottom { width: 600px; height: 600px; background: var(--crimson); bottom: -300px; right: -150px; animation-duration: 18s; }
+  @keyframes breathe { to { transform: scale(1.1) translate(40px, 30px); opacity: 0.3; } }
 
   /* ---------- SCREENS OVERVIEW ---------- */
   .stage { position: relative; z-index: 2; }
@@ -64,32 +64,37 @@
   /* ---------- SCREEN 1: THE ELEGANT COVER ---------- */
   #cover .wrap { text-align: center; }
   
-  .floating-heart-btn {
-    width: 120px; height: 120px; margin: 0 auto 35px;
-    cursor: pointer; position: relative;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.3s ease;
+  /* New Image Button Style */
+  .image-btn {
+    width: min(55vw, 220px);
+    aspect-ratio: 1/1;
+    margin: 0 auto 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
+    animation: gentle-float 4s ease-in-out infinite alternate;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .floating-heart-btn:active { transform: scale(0.92); }
   
-  .floating-heart-btn svg {
-    width: 70px; height: 70px; z-index: 2;
-    fill: var(--gold);
-    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.75));
-    animation: gentle-heartbeat 2.4s infinite ease-in-out;
+  .image-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05); /* Slight zoom to fill the circle nicely */
+    transition: transform 0.5s ease;
   }
-  .floating-heart-btn::before {
-    content: ''; position: absolute;
-    width: 80px; height: 80px; border-radius: 50%;
-    background: var(--crimson);
-    filter: blur(28px); opacity: 0.65; z-index: 1;
-    animation: gentle-heartbeat 2.4s infinite ease-in-out;
+
+  .image-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5), inset 0 0 30px rgba(0,0,0,0.9);
   }
-  @keyframes gentle-heartbeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.18); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.18); }
+  
+  @keyframes gentle-float {
+    0% { transform: translateY(0px); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+    100% { transform: translateY(-10px); box-shadow: 0 0 50px rgba(212, 175, 55, 0.5); }
   }
 
   h1.title { font-weight: 400; font-size: clamp(48px, 10vw, 90px); letter-spacing: 0.05em; color: var(--text-main); line-height: 1; }
@@ -206,7 +211,7 @@
   .envelope.open .wax-seal { opacity: 0; }
   .envelope.open .photo-preview { transform: translateY(-30%); opacity: 1; }
 
-  /* ---------- NEW: PHOTO & LYRIC MODAL ---------- */
+  /* ---------- PHOTO & LYRIC MODAL ---------- */
   .photo-modal {
     position: fixed; inset: 0; background: rgba(10, 11, 16, 0.98); backdrop-filter: blur(15px);
     display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
@@ -233,23 +238,26 @@
     opacity: 0.85; transition: opacity 0.5s ease;
   }
   
-  /* Edit Style Typography */
+  /* BEAUTIFUL FLOATING LYRICS TYPOGRAPHY */
   #lyrics-container {
     position: absolute; inset: 0; pointer-events: none; z-index: 20;
   }
   .edit-lyric {
     position: absolute;
-    transform-origin: center;
     white-space: nowrap;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.4);
-    animation: pop-in-out 2.5s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    text-align: center;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 25px currentColor;
+    font-weight: 500;
+    opacity: 0;
+    animation: float-lyric 3.5s cubic-bezier(0.2, 1, 0.4, 1) forwards;
   }
-  @keyframes pop-in-out {
-    0% { transform: scale(0.2) translate(-50%, -50%) rotate(var(--rot)); opacity: 0; }
-    15% { transform: scale(1.1) translate(-50%, -50%) rotate(var(--rot)); opacity: 1; }
-    25% { transform: scale(1) translate(-50%, -50%) rotate(var(--rot)); }
-    75% { transform: scale(1) translate(-50%, -60%) rotate(var(--rot)); opacity: 1; }
-    100% { transform: scale(1.1) translate(-50%, -80%) rotate(var(--rot)); opacity: 0; filter: blur(4px); }
+  
+  @keyframes float-lyric {
+    0% { transform: translateY(25px) scale(0.85) rotate(var(--rot)); opacity: 0; filter: blur(3px); }
+    15% { transform: translateY(0px) scale(1.05) rotate(var(--rot)); opacity: 1; filter: blur(0px); }
+    30% { transform: translateY(-10px) scale(1) rotate(var(--rot)); opacity: 1; }
+    80% { transform: translateY(-35px) scale(1) rotate(var(--rot)); opacity: 1; filter: blur(0px); }
+    100% { transform: translateY(-50px) scale(0.9) rotate(var(--rot)); opacity: 0; filter: blur(5px); }
   }
 
   .close-btn {
@@ -276,16 +284,15 @@
 
 <div class="stage">
   <!-- SCREEN 1: COVER -->
-  <section class="screen active" id="cover" onclick="go('ask')">
+  <section class="screen active" id="cover">
     <div class="wrap">
-      <div class="floating-heart-btn">
-        <svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg">
-          <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
-        </svg>
+      <!-- Image acting as the button -->
+      <div class="image-btn" onclick="go('ask')">
+        <img src="1000081109.png" alt="Tap the heart">
       </div>
       <h1 class="title">Nandini<span class="italic">.</span></h1>
       <p class="subtitle">Something I needed to say</p>
-      <p class="hint-text">Tap the heart</p>
+      <p class="hint-text">Tap the image</p>
     </div>
   </section>
 
@@ -354,17 +361,20 @@
 <div class="playfield" id="playfield"></div>
 
 <script>
-  /* ---------- GENERATE BACKGROUND STARS ---------- */
+  /* ---------- GENERATE DENSE GOLDEN STARDUST ---------- */
   (function(){
     const layer = document.getElementById('ambient');
-    for(let i=0; i<40; i++){
+    // Increased particle count for a denser look
+    for(let i=0; i<80; i++){
       const star = document.createElement('div');
       star.className = 'star';
-      const size = Math.random() * 3 + 1;
+      // Varied smaller sizes for realism
+      const size = Math.random() * 2.5 + 0.5;
       star.style.width = size + 'px';
       star.style.height = size + 'px';
       star.style.left = Math.random() * 100 + 'vw';
-      star.style.animationDuration = (10 + Math.random() * 20) + 's';
+      // Randomize speed and delay
+      star.style.animationDuration = (8 + Math.random() * 15) + 's';
       star.style.animationDelay = (Math.random() * -20) + 's';
       layer.appendChild(star);
     }
@@ -467,38 +477,17 @@
   /* ---------- ENVELOPE, PHOTO, AND TIMED LYRICS ---------- */
   let currentLyricIndex = 0;
 
-  // The Exact Timestamps provided by you!
   const timedLyrics = [
-    { time: 0, text: "Mujhe" },
-    { time: 1, text: "jo" },
-    { time: 2, text: "hua hai" },
-    { time: 3, text: "iski" },
-    { time: 4, text: "na dawa hai" },
-    { time: 5, text: "kisi ne" },
-    { time: 6, text: "chuha" },
-    { time: 7, text: "hai dil" },
-    { time: 8, text: "kiski" },
-    { time: 9, text: "kiski" },
-    { time: 10, text: "nazar ka hai" },
-    { time: 11, text: "asar" },
-    { time: 12, text: "puche jo" },
-    { time: 13, text: "koi toh" },
-    { time: 14, text: "tera" },
-    { time: 15, text: "naam looo" },
-    { time: 16, text: "tera naam loo" },
-    { time: 17, text: "looo" },
-    { time: 18, text: "puche" },
-    { time: 19, text: "jo koi" },
-    { time: 20, text: "tera naam" },
-    { time: 21, text: "looo" },
-    { time: 22, text: "tera naam" },
-    { time: 23, text: "tera naam" },
-    { time: 24, text: "mai" },
-    { time: 25, text: "kehdoon sabhi" },
-    { time: 26, text: "ko" },
-    { time: 27, text: "ki tera hi" },
-    { time: 28, text: "hai ye" },
-    { time: 29, text: "asar" }
+    { time: 0, text: "Mujhe" }, { time: 1, text: "jo" }, { time: 2, text: "hua hai" },
+    { time: 3, text: "iski" }, { time: 4, text: "na dawa hai" }, { time: 5, text: "kisi ne" },
+    { time: 6, text: "chuha" }, { time: 7, text: "hai dil" }, { time: 8, text: "kiski" },
+    { time: 9, text: "kiski" }, { time: 10, text: "nazar ka hai" }, { time: 11, text: "asar" },
+    { time: 12, text: "puche jo" }, { time: 13, text: "koi toh" }, { time: 14, text: "tera" },
+    { time: 15, text: "naam looo" }, { time: 16, text: "tera naam loo" }, { time: 17, text: "looo" },
+    { time: 18, text: "puche" }, { time: 19, text: "jo koi" }, { time: 20, text: "tera naam" },
+    { time: 21, text: "looo" }, { time: 22, text: "tera naam" }, { time: 23, text: "tera naam" },
+    { time: 24, text: "mai" }, { time: 25, text: "kehdoon sabhi" }, { time: 26, text: "ko" },
+    { time: 27, text: "ki tera hi" }, { time: 28, text: "hai ye" }, { time: 29, text: "asar" }
   ];
 
   function openEnvelope(){
@@ -512,7 +501,7 @@
       song2.play().catch(e => console.log("Song 2 blocked", e));
     }
 
-    currentLyricIndex = 0; // Reset lyrics
+    currentLyricIndex = 0;
 
     setTimeout(() => { 
       document.getElementById('photoPane').classList.add('show'); 
@@ -521,13 +510,12 @@
 
   function closePhoto(){ 
     document.getElementById('photoPane').classList.remove('show');
-    document.getElementById('lyrics-container').innerHTML = ''; // clear words
-    currentLyricIndex = 0; // Reset index
+    document.getElementById('lyrics-container').innerHTML = '';
+    currentLyricIndex = 0;
     if(song2) song2.pause();
     if(bgMusic) bgMusic.play(); 
   }
 
-  // Lyric Spawning Logic
   if (song2) {
     song2.addEventListener('timeupdate', () => {
       if (currentLyricIndex < timedLyrics.length) {
@@ -549,14 +537,14 @@
     const fonts = ['var(--script)', 'var(--serif)', 'var(--sans)'];
     word.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
     
-    const colors = ['#fff', 'var(--gold)', '#f3cad2', 'var(--crimson)'];
+    const colors = ['#ffffff', '#ffb6c1', '#fce4ec', 'var(--gold)'];
     word.style.color = colors[Math.floor(Math.random() * colors.length)];
     
-    word.style.fontSize = (Math.random() * 25 + 35) + 'px'; // Slightly smaller so it fits well
-    word.style.setProperty('--rot', (Math.random() * 40 - 20) + 'deg');
+    word.style.fontSize = (Math.random() * 20 + 35) + 'px'; 
+    word.style.setProperty('--rot', (Math.random() * 20 - 10) + 'deg');
     
     const xPos = Math.random() > 0.5 ? (Math.random() * 25 + 5) : (Math.random() * 25 + 70); 
-    const yPos = (Math.random() * 80 + 10);
+    const yPos = (Math.random() * 70 + 15);
     word.style.left = xPos + 'vw';
     word.style.top = yPos + 'vh';
     
@@ -564,7 +552,7 @@
     
     setTimeout(() => {
       if(word.parentNode) word.parentNode.removeChild(word);
-    }, 2500);
+    }, 3500);
   }
 </script>
 </body>
