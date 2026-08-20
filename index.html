@@ -19,7 +19,7 @@
     --crimson: #7a1523;
     --crimson-glow: rgba(122, 21, 35, 0.45);
     --parchment: #f9f6f0;
-    
+
     --serif: 'Cormorant Garamond', serif;
     --script: 'Caveat', cursive;
     --sans: 'Jost', sans-serif;
@@ -27,12 +27,24 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow-x: hidden; background: var(--bg); color: var(--text-main); font-family: var(--serif); }
-  
+
   body {
     background: radial-gradient(circle at 50% 0%, var(--bg-light) 0%, var(--bg) 70%);
     min-height: 100vh; position: relative;
   }
   ::selection { background: var(--gold); color: #000; }
+
+  /* ---------- SCREEN SHAKE (ignition jolt) ---------- */
+  @keyframes screen-shake {
+    0%, 100% { transform: translate(0,0); }
+    15% { transform: translate(-5px,3px) rotate(-0.2deg); }
+    30% { transform: translate(4px,-4px) rotate(0.2deg); }
+    45% { transform: translate(-4px,-2px); }
+    60% { transform: translate(5px,3px); }
+    75% { transform: translate(-3px,2px); }
+    90% { transform: translate(2px,-2px); }
+  }
+  body.shake { animation: screen-shake 0.45s ease-in-out; }
 
   /* ---------- UPGRADED GOLDEN STARDUST & VIGNETTE ---------- */
   .ambient { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
@@ -55,6 +67,15 @@
   .vignette {
     position: fixed; inset: 0; pointer-events: none; z-index: 44;
     box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8);
+    transition: box-shadow 0.6s ease;
+  }
+  .vignette.intensify { animation: vignette-pulse 3.5s ease-in-out; }
+  @keyframes vignette-pulse {
+    0%   { box-shadow: inset 0 0 120px rgba(0,0,0,0.8); }
+    12%  { box-shadow: inset 0 0 180px rgba(0,0,0,0.9), inset 0 0 120px rgba(255,90,0,0.25); }
+    50%  { box-shadow: inset 0 0 240px rgba(0,0,0,0.95), inset 0 0 160px rgba(255,50,0,0.35); }
+    85%  { box-shadow: inset 0 0 200px rgba(0,0,0,0.95), inset 0 0 100px rgba(255,60,0,0.15); }
+    100% { box-shadow: inset 0 0 120px rgba(0,0,0,0.8); }
   }
 
   /* ---------- FILM GRAIN OVERLAY ---------- */
@@ -74,7 +95,31 @@
     83%  { transform: translate(4%,2%); }
     100% { transform: translate(0,0); }
   }
-  @media (prefers-reduced-motion: reduce) { .grain-overlay { animation: none; } }
+
+  /* ---------- CINEMATIC LETTERBOX BARS ---------- */
+  .letterbox {
+    position: fixed; left: 0; right: 0; background: #000;
+    z-index: 66; height: 0; pointer-events: none;
+    transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .letterbox.top { top: 0; }
+  .letterbox.bottom { bottom: 0; }
+  .letterbox.show { height: 9vh; }
+
+  /* ---------- SCREEN FLASH ---------- */
+  .screen-flash {
+    position: fixed; inset: 0; z-index: 62; pointer-events: none; opacity: 0;
+  }
+  .screen-flash.flare {
+    background: radial-gradient(circle at 50% 58%, rgba(255,130,30,0.6), rgba(255,60,0,0.18) 42%, transparent 72%);
+    animation: flare-pulse 0.55s ease-out;
+  }
+  .screen-flash.white-cut {
+    background: radial-gradient(circle at 50% 50%, rgba(255,244,224,0.95), rgba(255,244,224,0.5) 55%, transparent 80%);
+    animation: white-cut-pulse 0.7s ease-out;
+  }
+  @keyframes flare-pulse { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes white-cut-pulse { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 
   /* ---------- SCREENS OVERVIEW ---------- */
   .stage { position: relative; z-index: 2; }
@@ -125,7 +170,7 @@
   .prompt .highlight { font-style: italic; color: var(--gold); }
   .row { display: flex; gap: 20px; justify-content: center; position: relative; min-height: 60px; width: 100%; max-width: 400px; margin: 0 auto; }
   #noBtn { position: absolute; left: 60%; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.2s ease, top 0.2s ease; z-index: 10; }
-  
+
   .taunt {
     position: fixed; font-family: var(--script); color: var(--gold); font-size: 28px;
     pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.8);
@@ -158,36 +203,94 @@
   .caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -0.15em; background: var(--gold); animation: caret-blink 0.85s steps(1) infinite; }
   @keyframes caret-blink { 50% { opacity: 0; } }
 
-  /* ---------- ENVELOPE ---------- */
+  /* ---------- ENVELOPE BURNING ---------- */
   .envelope-section { text-align: center; margin-bottom: 100px; }
   .env-hint { font-family: var(--script); font-size: 28px; color: var(--text-muted); margin-bottom: 30px; }
-  
+
   .envelope {
     position: relative; width: min(90vw, 400px); aspect-ratio: 16/10; margin: 0 auto;
     background: #1a1a1d; border-radius: 4px; cursor: pointer;
     box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05); transition: transform 0.5s ease;
   }
   .envelope:hover { transform: translateY(-5px); }
-  .env-back { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; }
-  .env-back::before, .env-back::after { content: ""; position: absolute; bottom: 0; width: 52%; height: 65%; background: #222226; border-top: 1px solid rgba(255,255,255,0.03); }
-  .env-back::before { left: 0; clip-path: polygon(0 100%, 100% 100%, 0 0); }
-  .env-back::after { right: 0; clip-path: polygon(0 100%, 100% 100%, 100% 0); }
-  
-  .flap {
-    position: absolute; top: 0; left: 0; right: 0; height: 65%; background: #1e1e22; clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top; transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 3; border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-  }
+  .env-back { position: absolute; inset: 0; border-radius: 4px; overflow: hidden; background: #222226; }
+  .env-back::before { content: ""; position: absolute; bottom: 0; left: 0; width: 52%; height: 65%; background: #1e1e22; border-top: 1px solid rgba(255,255,255,0.03); clip-path: polygon(0 100%, 100% 100%, 0 0); }
+  .env-back::after { content: ""; position: absolute; bottom: 0; right: 0; width: 52%; height: 65%; background: #1e1e22; border-top: 1px solid rgba(255,255,255,0.03); clip-path: polygon(0 100%, 100% 100%, 100% 0); }
+  .flap { position: absolute; top: 0; left: 0; right: 0; height: 65%; background: #2a2a2e; clip-path: polygon(0 0, 100% 0, 50% 100%); z-index: 3; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
   .wax-seal {
     position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 50%; background: var(--crimson);
-    box-shadow: 0 4px 15px var(--crimson-glow), inset 0 -2px 6px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 4; transition: opacity 0.5s ease;
+    box-shadow: 0 4px 15px var(--crimson-glow), inset 0 -2px 6px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 4;
   }
   .wax-seal::after { content: 'N'; font-family: var(--serif); font-style: italic; color: #fff; font-size: 24px; opacity: 0.8; }
-  
-  .photo-preview { position: absolute; left: 15%; right: 15%; top: 5%; bottom: 5%; background: #000; border-radius: 2px; transform: translateY(0); opacity: 0; transition: transform 1.2s ease 0.2s, opacity 0.8s ease 0.2s; z-index: 2; }
-  
-  .envelope.open .flap { transform: rotateX(180deg); }
-  .envelope.open .wax-seal { opacity: 0; }
-  .envelope.open .photo-preview { transform: translateY(-30%); opacity: 1; }
+
+  .flame-lick {
+    position: absolute; width: 26px; height: 40px; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 100%, #fff3c0 0%, #ffb347 25%, #ff5a00 55%, transparent 75%);
+    opacity: 0; filter: blur(1px); mix-blend-mode: screen; z-index: 6;
+    transform-origin: bottom center;
+  }
+  .envelope.burning .flame-lick { animation: flame-lick 3.5s ease-in forwards; }
+  .flame-lick.fl1 { left: -6px; bottom: -6px; animation-delay: 0s; }
+  .flame-lick.fl2 { right: -6px; bottom: -6px; animation-delay: 0.15s; transform: scaleX(-1); }
+  .flame-lick.fl3 { left: 50%; top: -10px; margin-left: -13px; animation-delay: 0.3s; }
+  @keyframes flame-lick {
+    0%   { opacity: 0; transform: scale(0.3) translateY(0); }
+    10%  { opacity: 1; transform: scale(1) translateY(0); }
+    30%  { opacity: 1; transform: scale(1.3, 1.5) translateY(-6px); }
+    45%  { opacity: 0.9; transform: scale(1.1, 1.6) translateY(-10px); }
+    60%  { opacity: 1; transform: scale(1.4, 1.8) translateY(-16px); }
+    80%  { opacity: 0.7; transform: scale(1.6, 2.1) translateY(-26px); }
+    100% { opacity: 0; transform: scale(1.8, 2.4) translateY(-40px); }
+  }
+
+  .envelope.burning {
+    animation: burn-away 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+  }
+  .envelope.burning .wax-seal { opacity: 0; transition: 0.3s; }
+
+  @keyframes burn-away {
+    0%   { opacity: 1; filter: drop-shadow(0 0 0px #ff4500) brightness(1) contrast(1); transform: scale(1) rotate(0deg); }
+    8%   { filter: drop-shadow(0 0 30px #ff6a00) brightness(1.15) contrast(1.1) sepia(0.4); transform: scale(0.995) rotate(-0.3deg); }
+    16%  { opacity: 1; filter: drop-shadow(0 0 45px #ff4500) sepia(0.8) hue-rotate(-30deg) brightness(1.05); transform: scale(0.98) rotate(0.3deg); }
+    28%  { filter: drop-shadow(0 0 55px #ff3300) sepia(0.9) hue-rotate(-40deg) contrast(1.6) brightness(0.95); transform: scale(0.965) rotate(-0.4deg); }
+    40%  { opacity: 0.92; filter: drop-shadow(0 0 70px #ff2200) sepia(1) hue-rotate(-50deg) contrast(2) brightness(0.85); transform: scale(0.95) translateY(4px) rotate(0.5deg); }
+    55%  { opacity: 0.85; filter: drop-shadow(0 0 85px #ff2200) sepia(1) hue-rotate(-55deg) contrast(2.3) brightness(0.65); transform: scale(0.93) translateY(10px) rotate(-0.6deg); }
+    70%  { opacity: 0.6; filter: drop-shadow(0 0 60px #cc1500) sepia(1) hue-rotate(-60deg) contrast(2.6) brightness(0.4); transform: scale(0.88) translateY(18px) rotate(0.8deg); }
+    85%  { opacity: 0.3; filter: drop-shadow(0 0 30px #700a00) brightness(0.15) contrast(3); transform: scale(0.82) translateY(26px) rotate(-1deg); }
+    100% { opacity: 0; filter: drop-shadow(0 0 10px #200000) brightness(0); transform: scale(0.75) translateY(34px) rotate(1deg); }
+  }
+
+  .ember {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 40;
+    animation: ember-float ease-in forwards;
+  }
+  @keyframes ember-float {
+    0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+    70%  { opacity: 0.9; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0.2) rotate(var(--er)); opacity: 0; }
+  }
+
+  .smoke {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 39;
+    background: radial-gradient(circle, rgba(130,130,135,0.45), rgba(90,90,95,0.15) 55%, transparent 75%);
+    filter: blur(5px);
+    animation: smoke-rise ease-out forwards;
+  }
+  @keyframes smoke-rise {
+    0%   { transform: translate(0,0) scale(0.5); opacity: 0.55; }
+    100% { transform: translate(var(--sx), var(--sy)) scale(2.4); opacity: 0; }
+  }
+
+  .ash-fleck {
+    position: fixed; background: #2a2724; pointer-events: none; z-index: 41; opacity: 0.9;
+    animation: ash-fall ease-in forwards;
+  }
+  @keyframes ash-fall {
+    0%   { transform: translate(0,0) rotate(0deg); opacity: 0.9; }
+    100% { transform: translate(var(--ax), var(--ay)) rotate(var(--ar)); opacity: 0; }
+  }
 
   /* ---------- PHOTO & LYRIC MODAL ---------- */
   .photo-modal {
@@ -195,17 +298,16 @@
     display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; overflow: hidden;
   }
   .photo-modal.show { opacity: 1; pointer-events: auto; }
-  
+
   .polaroid-card {
     position: relative; width: min(90vw, 380px); aspect-ratio: 9/16; background: #000; border: 4px solid var(--parchment); border-radius: 8px;
     box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.2); transform: translateY(60px) scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 10;
     cursor: pointer; touch-action: none;
   }
   .photo-modal.show .polaroid-card { transform: translateY(0) scale(1); }
-  .polaroid-card.holding { transform: scale(0.95) !important; transition: transform 0.3s ease; } /* Squeeze effect when holding */
+  .polaroid-card.holding { transform: scale(0.95) !important; transition: transform 0.3s ease; }
   .polaroid-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; opacity: 0.85; transition: opacity 0.5s ease; }
-  
-  /* Hold to reveal hint */
+
   .hold-hint {
     position: absolute; bottom: 40px; font-family: var(--sans); color: rgba(255,255,255,0.6);
     font-size: 14px; letter-spacing: 2px; text-transform: uppercase; pointer-events: none; opacity: 0; z-index: 51;
@@ -254,6 +356,9 @@
 <audio id="song2">
   <source src="song2.mp3" type="audio/mpeg">
 </audio>
+<audio id="burnSound">
+  <source src="burn.mp3" type="audio/mpeg">
+</audio>
 
 <!-- Background Ambient Elements -->
 <div class="ambient" id="ambient">
@@ -263,7 +368,10 @@
 
 <!-- Cinematic Overlays -->
 <div class="grain-overlay"></div>
-<div class="vignette"></div>
+<div class="vignette" id="vignette"></div>
+<div class="screen-flash" id="screenFlash"></div>
+<div class="letterbox top" id="letterboxTop"></div>
+<div class="letterbox bottom" id="letterboxBottom"></div>
 
 <div class="stage">
   <!-- SCREEN 1: COVER -->
@@ -298,7 +406,7 @@
   <!-- SCREEN 4: VIDEO & CONFESSION LETTER -->
   <section class="screen scroll" id="gallery" style="display:none">
     <div class="content-wrapper">
-      
+
       <!-- Video Player -->
       <div class="video-container">
         <video id="confessionVideo" src="trust-me.mp4" controls playsinline preload="metadata"></video>
@@ -320,23 +428,25 @@
         <p class="env-hint">One last thing...</p>
         <div class="envelope" id="env" onclick="openEnvelope()">
           <div class="env-back"></div>
-          <div class="photo-preview"></div>
           <div class="flap"></div>
           <div class="wax-seal"></div>
+          <div class="flame-lick fl1"></div>
+          <div class="flame-lick fl2"></div>
+          <div class="flame-lick fl3"></div>
         </div>
       </div>
     </div>
   </section>
 </div>
 
-<!-- Photo & Lyric Modal (Now contains the Hold Trigger) -->
+<!-- Photo & Lyric Modal -->
 <div class="photo-modal" id="photoPane">
   <button class="close-btn" onclick="closePhoto()">×</button>
-  
+
   <div class="polaroid-card" id="secretTrigger">
     <img src="nandini.jpg" alt="You">
   </div>
-  
+
   <div id="lyrics-container"></div>
   <div class="hold-hint">Press and hold</div>
 </div>
@@ -425,6 +535,7 @@
   /* ---------- YES CLICKED & MUSIC ---------- */
   const bgMusic = document.getElementById('bgMusic');
   const song2 = document.getElementById('song2');
+  const burnSound = document.getElementById('burnSound');
   const video = document.getElementById('confessionVideo');
 
   function yesClicked(){
@@ -499,7 +610,83 @@
     next();
   }
 
-  /* ---------- ENVELOPE, PHOTO, AND TIMED LYRICS ---------- */
+  /* ---------- CINEMATIC HELPERS: shake, flash, smoke, ash ---------- */
+  function flashScreen(type, duration){
+    const flash = document.getElementById('screenFlash');
+    flash.classList.remove('flare', 'white-cut');
+    void flash.offsetWidth; // force reflow
+    flash.classList.add(type);
+    setTimeout(() => flash.classList.remove(type), duration || 700);
+  }
+
+  function shakeScreen(){
+    document.body.classList.remove('shake');
+    void document.body.offsetWidth;
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 450);
+  }
+
+  function spawnEmbers(rect, count){
+    for(let i=0; i<count; i++){
+      const ember = document.createElement('div');
+      ember.className = 'ember';
+      const size = Math.random() * 4 + 2;
+      const colors = ['#ff5a00', '#ff8a00', '#ffcf5c', '#ff2200'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      ember.style.width = size + 'px';
+      ember.style.height = size + 'px';
+      ember.style.background = color;
+      ember.style.boxShadow = `0 0 ${size*2}px ${color}, 0 0 ${size*4}px ${color}`;
+      ember.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      ember.style.top = (rect.top + Math.random() * rect.height) + 'px';
+      ember.style.setProperty('--tx', (Math.random() * 160 - 80) + 'px');
+      ember.style.setProperty('--ty', (Math.random() * -260 - 60) + 'px');
+      ember.style.setProperty('--er', (Math.random() * 360) + 'deg');
+      const dur = 1.4 + Math.random() * 1.2;
+      ember.style.animationDuration = dur + 's';
+      document.body.appendChild(ember);
+      setTimeout(() => ember.remove(), dur * 1000 + 50);
+    }
+  }
+
+  function spawnSmoke(rect, count){
+    for(let i=0; i<count; i++){
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke';
+      const size = Math.random() * 40 + 30;
+      smoke.style.width = size + 'px';
+      smoke.style.height = size + 'px';
+      smoke.style.left = (rect.left + rect.width * (0.3 + Math.random() * 0.4)) + 'px';
+      smoke.style.top = (rect.top + rect.height * 0.2) + 'px';
+      smoke.style.setProperty('--sx', (Math.random() * 100 - 50) + 'px');
+      smoke.style.setProperty('--sy', (-220 - Math.random() * 140) + 'px');
+      const dur = 2 + Math.random() * 1.4;
+      smoke.style.animationDuration = dur + 's';
+      document.body.appendChild(smoke);
+      setTimeout(() => smoke.remove(), dur * 1000 + 50);
+    }
+  }
+
+  function spawnAsh(rect, count){
+    for(let i=0; i<count; i++){
+      const ash = document.createElement('div');
+      ash.className = 'ash-fleck';
+      const size = Math.random() * 4 + 2;
+      ash.style.width = size + 'px';
+      ash.style.height = size + 'px';
+      ash.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      ash.style.top = (rect.top + rect.height * 0.4 + Math.random() * rect.height * 0.4) + 'px';
+      ash.style.setProperty('--ax', (Math.random() * 60 - 30) + 'px');
+      ash.style.setProperty('--ay', (Math.random() * 80 + 60) + 'px');
+      ash.style.setProperty('--ar', (Math.random() * 200 - 100) + 'deg');
+      const dur = 1.2 + Math.random() * 0.8;
+      ash.style.animationDuration = dur + 's';
+      document.body.appendChild(ash);
+      setTimeout(() => ash.remove(), dur * 1000 + 50);
+    }
+  }
+
+  /* ---------- BURNING ENVELOPE, PHOTO, AND TIMED LYRICS ---------- */
   let currentLyricIndex = 0;
 
   const timedLyrics = [
@@ -517,9 +704,33 @@
 
   function openEnvelope(){
     const env = document.getElementById('env');
-    env.classList.add('open');
+    if(env.classList.contains('burning')) return; 
+    env.classList.add('burning');
 
-    // Smooth Crossfade for audio transition
+    const envRect = env.getBoundingClientRect();
+
+    shakeScreen();
+    flashScreen('flare', 500);
+
+    document.getElementById('letterboxTop').classList.add('show');
+    document.getElementById('letterboxBottom').classList.add('show');
+    document.getElementById('vignette').classList.add('intensify');
+
+    if(burnSound) {
+      burnSound.currentTime = 0;
+      burnSound.volume = 0.8;
+      burnSound.play().catch(e => console.log("Burn sound blocked", e));
+      
+      // AUTO STOP BURN SOUND AFTER 3.5 SECONDS
+      setTimeout(() => {
+        let bVol = burnSound.volume;
+        const bFade = setInterval(() => {
+            if(bVol > 0.05) { bVol -= 0.05; burnSound.volume = bVol; }
+            else { clearInterval(bFade); burnSound.pause(); }
+        }, 50);
+      }, 3500);
+    }
+
     if(bgMusic) {
       let vol = bgMusic.volume;
       const fadeOut = setInterval(() => {
@@ -527,31 +738,52 @@
         else { clearInterval(fadeOut); bgMusic.pause(); bgMusic.volume = 0.7; }
       }, 50);
     }
-    
-    if(song2) {
-      song2.currentTime = 0;
-      song2.volume = 0;
-      song2.play().catch(e => console.log("Song 2 blocked", e));
-      let vol2 = 0;
-      const fadeIn = setInterval(() => {
-        if(vol2 < 0.95) { vol2 += 0.05; song2.volume = vol2; }
-        else { clearInterval(fadeIn); song2.volume = 1; }
-      }, 50);
-    }
 
-    currentLyricIndex = 0;
+    const emberInterval = setInterval(() => spawnEmbers(envRect, 5), 120);
+    const smokeInterval = setInterval(() => spawnSmoke(envRect, 1), 260);
+
+    setTimeout(() => flashScreen('flare', 450), 1600);
+
+    const ashInterval = setTimeout(() => {
+      const ashLoop = setInterval(() => spawnAsh(envRect, 3), 100);
+      setTimeout(() => clearInterval(ashLoop), 900);
+    }, 2600);
 
     setTimeout(() => {
-      document.getElementById('photoPane').classList.add('show');
-    }, 1000);
+      clearInterval(emberInterval);
+      clearInterval(smokeInterval);
+      clearTimeout(ashInterval);
+      env.style.display = 'none'; 
+      document.getElementById('vignette').classList.remove('intensify');
+
+      flashScreen('white-cut', 700);
+
+      setTimeout(() => {
+        if(song2) {
+          song2.currentTime = 0;
+          song2.volume = 0;
+          song2.play().catch(e => console.log("Song 2 blocked", e));
+          let vol2 = 0;
+          const fadeIn = setInterval(() => {
+            if(vol2 < 0.95) { vol2 += 0.05; song2.volume = vol2; }
+            else { clearInterval(fadeIn); song2.volume = 1; }
+          }, 50);
+        }
+
+        currentLyricIndex = 0;
+        document.getElementById('photoPane').classList.add('show');
+      }, 220);
+    }, 3500);
   }
 
   function closePhoto(){
     document.getElementById('photoPane').classList.remove('show');
     document.getElementById('lyrics-container').innerHTML = '';
     currentLyricIndex = 0;
-    
-    // Crossfade back to background music
+
+    document.getElementById('letterboxTop').classList.remove('show');
+    document.getElementById('letterboxBottom').classList.remove('show');
+
     if(song2) {
       let vol = song2.volume;
       const fadeOut = setInterval(() => {
@@ -568,6 +800,12 @@
         else { clearInterval(fadeIn); bgMusic.volume = 0.7; }
       }, 50);
     }
+
+    setTimeout(() => {
+      const env = document.getElementById('env');
+      env.style.display = 'block';
+      env.classList.remove('burning');
+    }, 1000);
   }
 
   if (song2) {
@@ -618,12 +856,12 @@
 
     function startHold(e){
       e.preventDefault();
-      trigger.classList.add('holding'); // Adds a slight squeeze effect
+      trigger.classList.add('holding');
       holdTimer = setTimeout(() => {
         revealed = true;
         overlay.classList.add('show');
-        if(song2 && !song2.paused) song2.volume = 0.15; // Dims the music
-      }, 1000); // 1 second hold to reveal
+        if(song2 && !song2.paused) song2.volume = 0.15;
+      }, 1000);
     }
 
     function endHold(){
@@ -631,7 +869,7 @@
       trigger.classList.remove('holding');
       if(revealed){
         overlay.classList.remove('show');
-        if(song2 && !song2.paused) song2.volume = 1; // Brings music back
+        if(song2 && !song2.paused) song2.volume = 1;
         revealed = false;
       }
     }
