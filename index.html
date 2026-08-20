@@ -17,7 +17,9 @@
     --gold: #d4af37;
     --gold-glow: rgba(212, 175, 55, 0.4);
     --crimson: #7a1523;
+    --crimson-glow: rgba(122, 21, 35, 0.45);
     --parchment: #f9f6f0;
+
     --serif: 'Cormorant Garamond', serif;
     --script: 'Caveat', cursive;
     --sans: 'Jost', sans-serif;
@@ -26,7 +28,10 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow-x: hidden; background: var(--bg); color: var(--text-main); font-family: var(--serif); }
 
-  body { background: radial-gradient(circle at 50% 0%, var(--bg-light) 0%, var(--bg) 70%); min-height: 100vh; position: relative; }
+  body {
+    background: radial-gradient(circle at 50% 0%, var(--bg-light) 0%, var(--bg) 70%);
+    min-height: 100vh; position: relative;
+  }
   ::selection { background: var(--gold); color: #000; }
 
   /* ---------- SCREEN SHAKE (ignition jolt) ---------- */
@@ -43,7 +48,11 @@
 
   /* ---------- STARDUST, VIGNETTE, & GRAIN ---------- */
   .ambient { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
-  .star { position: absolute; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); opacity: 0; animation: float-up linear infinite; }
+  .star {
+    position: absolute; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 8px var(--gold);
+    opacity: 0; animation: float-up linear infinite;
+  }
   @keyframes float-up {
     0% { transform: translateY(110vh) translateX(0px); opacity: 0; }
     20% { opacity: 0.8; }
@@ -55,7 +64,11 @@
   .glow-orb.bottom { width: 600px; height: 600px; background: var(--crimson); bottom: -300px; right: -150px; animation-duration: 18s; }
   @keyframes breathe { to { transform: scale(1.1) translate(40px, 30px); opacity: 0.3; } }
 
-  .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 44; box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8); transition: box-shadow 0.6s ease; }
+  .vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 44;
+    box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8);
+    transition: box-shadow 0.6s ease;
+  }
   .vignette.intensify { animation: vignette-pulse 3.5s ease-in-out; }
   @keyframes vignette-pulse {
     0%   { box-shadow: inset 0 0 120px rgba(0,0,0,0.8); }
@@ -66,17 +79,30 @@
   }
 
   .grain-overlay {
-    position: fixed; inset: -50px; z-index: 45; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+    position: fixed; inset: -50px; z-index: 45; pointer-events: none;
+    opacity: 0.06; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 140px 140px; animation: grain-shift 1.1s steps(6) infinite;
+    background-size: 140px 140px;
+    animation: grain-shift 1.1s steps(6) infinite;
   }
   @keyframes grain-shift {
-    0% { transform: translate(0,0); } 16% { transform: translate(-3%,-4%); } 33% { transform: translate(-5%,3%); }
-    50% { transform: translate(3%,-5%); } 66% { transform: translate(-3%,6%); } 83% { transform: translate(4%,2%); } 100% { transform: translate(0,0); }
+    0%   { transform: translate(0,0); }
+    16%  { transform: translate(-3%,-4%); }
+    33%  { transform: translate(-5%,3%); }
+    50%  { transform: translate(3%,-5%); }
+    66%  { transform: translate(-3%,6%); }
+    83%  { transform: translate(4%,2%); }
+    100% { transform: translate(0,0); }
   }
 
-  .letterbox { position: fixed; left: 0; right: 0; background: #000; z-index: 66; height: 0; pointer-events: none; transition: height 1s cubic-bezier(0.4,0,0.2,1); }
-  .letterbox.top { top: 0; } .letterbox.bottom { bottom: 0; } .letterbox.show { height: 9vh; }
+  .letterbox {
+    position: fixed; left: 0; right: 0; background: #000;
+    z-index: 66; height: 0; pointer-events: none;
+    transition: height 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .letterbox.top { top: 0; }
+  .letterbox.bottom { bottom: 0; }
+  .letterbox.show { height: 9vh; }
 
   .screen-flash { position: fixed; inset: 0; z-index: 62; pointer-events: none; opacity: 0; }
   .screen-flash.flare { background: radial-gradient(circle at 50% 58%, rgba(255,130,30,0.6), rgba(255,60,0,0.18) 42%, transparent 72%); animation: flare-pulse 0.55s ease-out; }
@@ -93,7 +119,8 @@
   /* ---------- COVER ---------- */
   #cover .wrap { text-align: center; }
   .image-btn {
-    width: min(55vw, 220px); aspect-ratio: 1/1; margin: 0 auto 35px; border-radius: 50%; overflow: hidden; cursor: pointer; position: relative;
+    width: min(55vw, 220px); aspect-ratio: 1/1; margin: 0 auto 35px; border-radius: 50%;
+    overflow: hidden; cursor: pointer; position: relative;
     border: 2px solid rgba(212, 175, 55, 0.4); box-shadow: 0 0 40px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
     animation: gentle-float 4s ease-in-out infinite alternate; transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -107,7 +134,7 @@
   .hint-text { margin-top: 50px; font-family: var(--script); font-size: 24px; color: var(--gold); animation: fade-in-out 3s infinite; }
   @keyframes fade-in-out { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-  /* ---------- BUTTONS ---------- */
+  /* ---------- ASK & BURST ---------- */
   .btn { font-family: var(--sans); font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 36px; border-radius: 4px; border: 1px solid transparent; cursor: pointer; font-size: 13px; transition: all 0.3s ease; }
   .btn-gold { background: var(--gold); color: #000; box-shadow: 0 10px 20px var(--gold-glow); }
   .btn-outline { background: transparent; color: var(--text-main); border-color: rgba(244, 236, 225, 0.2); backdrop-filter: blur(5px); }
@@ -118,17 +145,11 @@
   #noBtn { position: absolute; left: 60%; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.2s ease, top 0.2s ease; z-index: 10; }
   .taunt { position: fixed; font-family: var(--script); color: var(--gold); font-size: 28px; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.8); transition: opacity 0.3s ease, transform 0.5s ease; z-index: 11; }
   .taunt.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-
-  /* ---------- BURST ---------- */
   #burst { background: var(--bg); }
   #burst .big { font-style: italic; font-size: clamp(50px, 8vw, 90px); color: var(--gold); transform: scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
   #burst.active .big { transform: scale(1); }
-  .sparks { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-  .spark { position: absolute; width: 1px; height: 30px; background: linear-gradient(var(--gold), transparent); transform-origin: center bottom; opacity: 0; }
-  #burst.active .spark { animation: shoot 1.5s ease-out forwards; }
-  @keyframes shoot { 0% { opacity: 0; transform: rotate(var(--r)) translateY(0) scaleY(0.2); } 20% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--r)) translateY(-60vh) scaleY(1); } }
 
-  /* ---------- CONFESSION LETTER ---------- */
+  /* ---------- CONFESSION ---------- */
   .content-wrapper { max-width: 700px; margin: 0 auto; width: 100%; padding: 0 20px; }
   .video-container { width: 100%; max-width: 400px; margin: 0 auto 60px; border-radius: 4px; padding: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
   .video-container video { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; border-radius: 2px; background: #000; }
@@ -139,64 +160,146 @@
   @keyframes caret-blink { 50% { opacity: 0; } }
 
   /* =========================================
-     IMAGE-BASED BURN ENGINE & PARTICLES
+     NEW REALISTIC 3D ENVELOPE 
      ========================================= */
-  .envelope-section { text-align: center; margin-bottom: 100px; }
-  .env-hint { font-family: var(--script); font-size: 28px; color: var(--text-muted); margin-bottom: 30px; }
+  .envelope-section { text-align: center; margin-bottom: 100px; perspective: 1200px; }
+  .env-hint { font-family: var(--script); font-size: 28px; color: var(--text-muted); margin-bottom: 40px; }
   
-  .envelope-wrapper {
-    position: relative;
-    width: min(90vw, 420px);
+  .envelope {
+    position: relative; 
+    width: min(85vw, 360px); 
+    aspect-ratio: 1.5/1; 
     margin: 0 auto;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
   }
-  .envelope-wrapper:active { transform: scale(0.95); }
-
-  .real-envelope {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.8));
-    transition: opacity 1s ease 1.5s, filter 2.5s linear;
+  .envelope:hover { transform: translateY(-5px) rotateX(5deg); }
+  
+  /* Textured Paper Body */
+  .env-body {
+    position: absolute; inset: 0; 
+    background: linear-gradient(135deg, #2b2b30 0%, #17171a 100%);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.5);
+    border-radius: 4px;
+    overflow: hidden;
   }
-
-  /* The Black Ash Wipe */
-  .burn-wipe {
-    position: absolute; inset: -20%; pointer-events: none; z-index: 5;
-    background: linear-gradient(135deg, transparent 0%, transparent 45%, #ffb347 48%, #ff2200 50%, #0a0b10 55%, #000000 100%);
-    background-size: 400% 400%;
-    background-position: 100% 0%;
-    opacity: 0;
-    mix-blend-mode: hard-light;
+  
+  /* Paper Grain on Envelope */
+  .env-body::before {
+    content: ''; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   }
 
-  .envelope-wrapper.burning .burn-wipe {
-    opacity: 1;
-    transition: background-position 2.5s linear;
-    background-position: 0% 100%;
+  /* Drop shadow wrappers for flaps */
+  .flap-shadow-left { position: absolute; inset: 0; filter: drop-shadow(5px 0px 10px rgba(0,0,0,0.6)); pointer-events: none; }
+  .flap-shadow-right { position: absolute; inset: 0; filter: drop-shadow(-5px 0px 10px rgba(0,0,0,0.6)); pointer-events: none; }
+  .flap-shadow-bottom { position: absolute; inset: 0; filter: drop-shadow(0px -8px 15px rgba(0,0,0,0.7)); pointer-events: none; z-index: 2; }
+  .flap-shadow-top { position: absolute; inset: -1px; filter: drop-shadow(0px 8px 20px rgba(0,0,0,0.8)); pointer-events: none; z-index: 4; }
+
+  /* Actual folded flaps */
+  .env-left {
+    position: absolute; inset: 0; background: linear-gradient(to right, #242429, #1c1c20);
+    clip-path: polygon(0 0, 50% 50%, 0 100%);
   }
-  .envelope-wrapper.burning .real-envelope {
-    opacity: 0; /* Fades out as the ash takes over */
-    filter: sepia(1) hue-rotate(-50deg) brightness(0.2) drop-shadow(0 0 0 rgba(0,0,0,0));
+  .env-right {
+    position: absolute; inset: 0; background: linear-gradient(to left, #242429, #1c1c20);
+    clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+  }
+  .env-bottom {
+    position: absolute; inset: 0; background: linear-gradient(to top, #2a2a30, #1e1e23);
+    clip-path: polygon(0 100%, 50% 45%, 100% 100%);
+  }
+  .env-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 65%; 
+    background: linear-gradient(to bottom, #2e2e35, #222226);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-top: 1px solid rgba(255,255,255,0.05);
   }
 
-  /* Magic Dust Explosion */
-  .magic-dust {
-    position: fixed; border-radius: 50%; pointer-events: none; z-index: 45;
-    mix-blend-mode: screen; opacity: 0;
+  /* 3D Wax Seal */
+  .wax-seal {
+    position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); 
+    width: 55px; height: 55px; border-radius: 50%; 
+    background: radial-gradient(circle at 30% 30%, #a31c2f, #7a1523, #4a0d15);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -4px 6px rgba(0,0,0,0.5); 
+    display: flex; align-items: center; justify-content: center; z-index: 5;
+    border: 2px solid #5a0f19;
   }
-  @keyframes dust-fly {
-    0%   { transform: translate(0, 0) scale(0.2); opacity: 0; }
-    10%  { opacity: 1; transform: translate(calc(var(--tx) * 0.1), calc(var(--ty) * 0.1)) scale(1); filter: brightness(2); }
-    80%  { opacity: 0.9; }
+  .wax-seal::after { 
+    content: 'N'; font-family: var(--serif); font-style: italic; color: #ffb8c3; 
+    font-size: 26px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); opacity: 0.9; 
+  }
+
+  /* =========================================
+     REALISTIC 3D SHRIVEL & BURN EFFECT 
+     ========================================= */
+  
+  /* Fire Gradient Overlay that sweeps across the envelope */
+  .fire-sweep {
+    position: absolute; inset: -50%; pointer-events: none; z-index: 6; opacity: 0;
+    background: radial-gradient(circle at center, transparent 20%, #ff5a00 40%, #ff0000 60%, #000 80%);
+    mix-blend-mode: color-dodge;
+  }
+
+  .envelope.burning {
+    animation: realistic-shrivel 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+  }
+  .envelope.burning .wax-seal { animation: melt-seal 1.5s forwards; }
+  .envelope.burning .fire-sweep { animation: sweep-fire 3.5s linear forwards; }
+
+  /* The physical paper curling and burning away */
+  @keyframes realistic-shrivel {
+    0%   { transform: rotateX(0deg) rotateY(0deg) scale(1); filter: brightness(1) contrast(1); }
+    15%  { transform: rotateX(10deg) rotateY(-5deg) scale(0.98); filter: brightness(1.2) contrast(1.2) sepia(0.5) hue-rotate(-20deg); box-shadow: 0 0 50px #ff4500; }
+    30%  { transform: rotateX(25deg) rotateY(10deg) scale(0.92); filter: brightness(0.8) contrast(2) sepia(1) hue-rotate(-40deg); box-shadow: 0 0 80px #ff2200; }
+    50%  { transform: rotateX(45deg) rotateY(-15deg) scale(0.85); filter: brightness(0.4) contrast(3) sepia(1) hue-rotate(-50deg); box-shadow: 0 0 60px #cc1100; }
+    75%  { transform: rotateX(60deg) rotateY(20deg) scale(0.6); filter: brightness(0.1) contrast(4); box-shadow: 0 0 20px #550000; opacity: 0.8; }
+    100% { transform: rotateX(80deg) rotateY(-30deg) scale(0.3); filter: brightness(0); box-shadow: none; opacity: 0; }
+  }
+
+  /* Sweeping fire texture */
+  @keyframes sweep-fire {
+    0% { transform: scale(0.1); opacity: 0; }
+    20% { transform: scale(0.5); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  /* Seal melting */
+  @keyframes melt-seal {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -30%) scale(1.2, 0.5); opacity: 0; filter: brightness(0); }
+  }
+
+  /* Intense Fire Embers */
+  .ember {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 40;
+    animation: ember-float ease-in forwards; mix-blend-mode: screen;
+  }
+  @keyframes ember-float {
+    0%   { transform: translate(0, 0) scale(1); opacity: 1; filter: brightness(2); }
+    70%  { opacity: 0.9; }
     100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
   }
+
+  /* Thick Smoke */
+  .smoke {
+    position: fixed; border-radius: 50%; pointer-events: none; z-index: 39;
+    background: radial-gradient(circle, rgba(100,100,105,0.6), rgba(50,50,55,0.2) 60%, transparent 80%);
+    filter: blur(8px); animation: smoke-rise ease-out forwards;
+  }
+  @keyframes smoke-rise {
+    0%   { transform: translate(0,0) scale(0.5); opacity: 0.8; }
+    100% { transform: translate(var(--sx), var(--sy)) scale(3); opacity: 0; }
+  }
+
 
   /* ---------- PHOTO & LYRIC MODAL ---------- */
   .photo-modal {
     position: fixed; inset: 0; background: rgba(10, 11, 16, 0.98); backdrop-filter: blur(15px);
-    display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 1.2s ease; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; overflow: hidden;
   }
   .photo-modal.show { opacity: 1; pointer-events: auto; }
 
@@ -216,6 +319,7 @@
   .photo-modal.show .hold-hint { animation: fade-hint 4s ease forwards 1.5s; }
   @keyframes fade-hint { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
 
+  /* BEAUTIFUL FLOATING LYRICS TYPOGRAPHY */
   #lyrics-container { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
   .edit-lyric { position: absolute; white-space: nowrap; text-align: center; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 25px currentColor; font-weight: 500; opacity: 0; animation: float-lyric 3.5s cubic-bezier(0.2, 1, 0.4, 1) forwards; }
   @keyframes float-lyric {
@@ -228,6 +332,7 @@
 
   .close-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; font-size: 28px; color: #fff; cursor: pointer; font-family: var(--sans); z-index: 51; }
 
+  /* ---------- SECRET HOLD-TO-REVEAL OVERLAY ---------- */
   .secret-overlay {
     position: fixed; inset: 0; background: rgba(4,4,7,0.96);
     display: flex; align-items: center; justify-content: center;
@@ -238,7 +343,9 @@
   .secret-message {
     font-family: var(--script); color: var(--gold);
     font-size: clamp(28px, 6.5vw, 46px); max-width: 520px; line-height: 1.4;
-    text-shadow: 0 0 30px var(--gold-glow); opacity: 0; transform: translateY(14px) scale(0.97); transition: opacity 1s ease 0.25s, transform 1s ease 0.25s;
+    text-shadow: 0 0 30px var(--gold-glow);
+    opacity: 0; transform: translateY(14px) scale(0.97);
+    transition: opacity 1s ease 0.25s, transform 1s ease 0.25s;
   }
   .secret-overlay.show .secret-message { opacity: 1; transform: translateY(0) scale(1); }
 
@@ -246,11 +353,24 @@
 </head>
 <body>
 
-<audio id="bgMusic" loop><source src="song.mp3" type="audio/mpeg"></audio>
-<audio id="song2"><source src="song2.mp3" type="audio/mpeg"></audio>
-<audio id="burnSound"><source src="burn.mp3" type="audio/mpeg"></audio>
+<!-- Audio Players -->
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+<audio id="song2">
+  <source src="song2.mp3" type="audio/mpeg">
+</audio>
+<audio id="burnSound">
+  <source src="burn.mp3" type="audio/mpeg">
+</audio>
 
-<div class="ambient" id="ambient"><div class="glow-orb top"></div><div class="glow-orb bottom"></div></div>
+<!-- Background Ambient Elements -->
+<div class="ambient" id="ambient">
+  <div class="glow-orb top"></div>
+  <div class="glow-orb bottom"></div>
+</div>
+
+<!-- Cinematic Overlays -->
 <div class="grain-overlay"></div>
 <div class="vignette" id="vignette"></div>
 <div class="screen-flash" id="screenFlash"></div>
@@ -258,7 +378,7 @@
 <div class="letterbox bottom" id="letterboxBottom"></div>
 
 <div class="stage">
-  <!-- SCREEN 1 -->
+  <!-- SCREEN 1: COVER -->
   <section class="screen active" id="cover">
     <div class="wrap">
       <div class="image-btn" onclick="go('ask')">
@@ -270,7 +390,7 @@
     </div>
   </section>
 
-  <!-- SCREEN 2 -->
+  <!-- SCREEN 2: CONFESSION ASK -->
   <section class="screen" id="ask">
     <div class="card">
       <p class="prompt">I know you like me. If not, then press <span class="highlight">'No'</span> and leave.</p>
@@ -281,18 +401,22 @@
     </div>
   </section>
 
-  <!-- SCREEN 3 -->
+  <!-- SCREEN 3: BURST -->
   <section class="screen" id="burst">
     <div class="sparks" id="sparks"></div>
     <div class="big">Thank you.</div>
   </section>
 
-  <!-- SCREEN 4: CONFESSION -->
+  <!-- SCREEN 4: VIDEO & CONFESSION LETTER -->
   <section class="screen scroll" id="gallery" style="display:none">
     <div class="content-wrapper">
+
+      <!-- Video Player -->
       <div class="video-container">
         <video id="confessionVideo" src="trust-me.mp4" controls playsinline preload="metadata"></video>
       </div>
+
+      <!-- Main Confession Notes (typed live via JS) -->
       <div class="confession-text" id="confessionText">
         <p data-full="I'm not doing this casually. I'm fully invested in you."></p>
         <p data-full="I like you more than any girl I've known, and I genuinely believe nothing between us will ever go to waste. The only thing I want—whether this becomes a relationship or even just a friendship—is that we are always honest and truthful with each other."></p>
@@ -303,12 +427,21 @@
         <span class="signature" data-full="And remember one thing — I love you more than you probably know."></span>
       </div>
 
-      <!-- IMAGE-BASED ENVELOPE -->
+      <!-- 3D Realistic Envelope -->
       <div class="envelope-section">
         <p class="env-hint">One last thing...</p>
-        <div class="envelope-wrapper" id="envWrap" onclick="openEnvelope()">
-          <img src="envelope.png" class="real-envelope">
-          <div class="burn-wipe"></div>
+        <div class="envelope" id="env" onclick="openEnvelope()">
+          <div class="env-body">
+             <!-- Flap Shadows -->
+             <div class="flap-shadow-left"><div class="env-left"></div></div>
+             <div class="flap-shadow-right"><div class="env-right"></div></div>
+             <div class="flap-shadow-bottom"><div class="env-bottom"></div></div>
+             <div class="flap-shadow-top"><div class="env-top"></div></div>
+             <!-- Seal -->
+             <div class="wax-seal"></div>
+             <!-- Burn Texture Overlay -->
+             <div class="fire-sweep"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -318,21 +451,24 @@
 <!-- Photo & Lyric Modal -->
 <div class="photo-modal" id="photoPane">
   <button class="close-btn" onclick="closePhoto()">×</button>
+
   <div class="polaroid-card" id="secretTrigger">
     <img src="nandini.jpg" alt="You">
   </div>
+
   <div id="lyrics-container"></div>
   <div class="hold-hint">Press and hold</div>
 </div>
 
 <div class="playfield" id="playfield"></div>
 
+<!-- Hold-to-reveal overlay -->
 <div class="secret-overlay" id="secretOverlay">
   <p class="secret-message">I've wanted to tell you this since the day we met.</p>
 </div>
 
 <script>
-  /* ---------- GENERATE STARDUST ---------- */
+  /* ---------- GENERATE DENSE GOLDEN STARDUST ---------- */
   (function(){
     const layer = document.getElementById('ambient');
     for(let i=0; i<80; i++){
@@ -348,6 +484,7 @@
     }
   })();
 
+  /* ---------- NAVIGATION ---------- */
   const screens = ['cover','ask','burst','gallery'];
   function go(id){
     screens.forEach(s => {
@@ -366,7 +503,9 @@
     window.scrollTo({top:0, behavior:'instant'});
   }
 
+  /* ---------- DODGING 'NO' BUTTON ---------- */
   const noBtn = document.getElementById('noBtn');
+  const playfield = document.getElementById('playfield');
   const taunts = ["Are you sure?", "Think again.", "Not an option.", "I'm serious.", "Try 'Yes'."];
   let tauntEl = null;
 
@@ -381,7 +520,10 @@
       y = pad + Math.random() * maxY;
       tries++;
     } while(e && Math.hypot(x+w/2 - (e.clientX||0), y+h/2 - (e.clientY||0)) < 150 && tries < 10);
-    noBtn.style.position = 'fixed'; noBtn.style.left = x + 'px'; noBtn.style.top = y + 'px';
+
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
     showTaunt(x + w/2, y - 20);
   }
 
@@ -399,6 +541,7 @@
   noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(e.touches[0]); }, {passive:false});
   noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(e); });
 
+  /* ---------- YES CLICKED & MUSIC ---------- */
   const bgMusic = document.getElementById('bgMusic');
   const song2 = document.getElementById('song2');
   const burnSound = document.getElementById('burnSound');
@@ -407,7 +550,7 @@
   function yesClicked(){
     if(bgMusic) {
       bgMusic.volume = 0;
-      bgMusic.play().catch(e => console.log("Audio blocked", e));
+      bgMusic.play().catch(e => console.log("Audio blocked:", e));
       let vol = 0;
       const fade = setInterval(() => {
         if(vol < 0.7) { vol += 0.05; bgMusic.volume = vol; }
@@ -430,40 +573,53 @@
     for(let i=0; i<60; i++){
       const el = document.createElement('div');
       el.className = 'spark';
-      el.style.setProperty('--r', ((360/60) * i) + 'deg');
+      const angle = (360/60) * i;
+      el.style.setProperty('--r', angle + 'deg');
       el.style.animationDelay = (Math.random() * 0.3) + 's';
       s.appendChild(el);
     }
   }
 
+  /* ---------- TYPEWRITER REVEAL FOR THE LETTER ---------- */
   let typewriterStarted = false;
   function startTypewriter(){
     if(typewriterStarted) return;
     typewriterStarted = true;
+
     const nodes = document.querySelectorAll('#confessionText p, #confessionText .signature');
     let i = 0;
+
     function typeNode(node, done){
       const full = node.getAttribute('data-full') || '';
-      const caret = document.createElement('span'); caret.className = 'caret';
+      const caret = document.createElement('span');
+      caret.className = 'caret';
       let charIndex = 0;
       const speed = node.classList.contains('signature') ? 45 : 22;
+
       function tick(){
         if(charIndex <= full.length){
           node.textContent = full.slice(0, charIndex);
           node.appendChild(caret);
-          charIndex++; setTimeout(tick, speed);
-        } else { caret.remove(); done(); }
+          charIndex++;
+          setTimeout(tick, speed);
+        } else {
+          caret.remove();
+          done();
+        }
       }
       tick();
     }
+
     function next(){
       if(i >= nodes.length) return;
-      typeNode(nodes[i], () => setTimeout(next, 380));
+      const node = nodes[i];
       i++;
+      typeNode(node, () => setTimeout(next, 380));
     }
     next();
   }
 
+  /* ---------- CINEMATIC HELPERS: shake, flash, smoke, ash ---------- */
   function flashScreen(type, duration){
     const flash = document.getElementById('screenFlash');
     flash.classList.remove('flare', 'white-cut');
@@ -479,42 +635,49 @@
     setTimeout(() => document.body.classList.remove('shake'), 450);
   }
 
-  /* ---------- HUNDREDS OF GLOWING DUST PARTICLES ---------- */
-  function generateMassiveDustExplosion(){
-    const env = document.getElementById('envWrap');
-    const rect = env.getBoundingClientRect();
-    
-    for(let i=0; i<250; i++){
-      let p = document.createElement('div');
-      p.className = 'magic-dust';
-      
-      let size = Math.random() * 5 + 1.5;
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-      
-      const colors = ['#ffcf5c', '#ffb347', '#ff5a00', '#ff2200', '#ffffff', '#2a2a2a'];
+  function spawnEmbers(rect, count){
+    for(let i=0; i<count; i++){
+      const ember = document.createElement('div');
+      ember.className = 'ember';
+      const size = Math.random() * 5 + 3;
+      const colors = ['#fff', '#ffea00', '#ff5a00', '#ff2200'];
       const color = colors[Math.floor(Math.random() * colors.length)];
-      p.style.background = color;
-      p.style.boxShadow = `0 0 ${size*3}px ${color}`;
-      
-      p.style.left = (rect.left + Math.random() * rect.width) + 'px';
-      p.style.top = (rect.top + Math.random() * rect.height) + 'px';
-      
-      let angle = Math.random() * Math.PI * 2;
-      let distance = Math.random() * 350 + 80;
-      p.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-      p.style.setProperty('--ty', (Math.sin(angle) * distance - 200) + 'px');
-      
-      let dur = Math.random() * 2 + 1.5;
-      p.style.animation = `dust-fly ${dur}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
-      p.style.animationDelay = (Math.random() * 1.5) + 's';
-      
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), (dur + 1.5) * 1000);
+      ember.style.width = size + 'px';
+      ember.style.height = size + 'px';
+      ember.style.background = color;
+      ember.style.boxShadow = `0 0 ${size*2}px ${color}, 0 0 ${size*4}px ${color}`;
+      ember.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      ember.style.top = (rect.top + Math.random() * rect.height) + 'px';
+      ember.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+      ember.style.setProperty('--ty', (Math.random() * -300 - 100) + 'px');
+      const dur = 1.2 + Math.random() * 1.5;
+      ember.style.animationDuration = dur + 's';
+      document.body.appendChild(ember);
+      setTimeout(() => ember.remove(), dur * 1000 + 50);
     }
   }
 
+  function spawnSmoke(rect, count){
+    for(let i=0; i<count; i++){
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke';
+      const size = Math.random() * 60 + 40;
+      smoke.style.width = size + 'px';
+      smoke.style.height = size + 'px';
+      smoke.style.left = (rect.left + rect.width * (0.2 + Math.random() * 0.6)) + 'px';
+      smoke.style.top = (rect.top + rect.height * 0.2) + 'px';
+      smoke.style.setProperty('--sx', (Math.random() * 140 - 70) + 'px');
+      smoke.style.setProperty('--sy', (-250 - Math.random() * 180) + 'px');
+      const dur = 2 + Math.random() * 2;
+      smoke.style.animationDuration = dur + 's';
+      document.body.appendChild(smoke);
+      setTimeout(() => smoke.remove(), dur * 1000 + 50);
+    }
+  }
+
+  /* ---------- BURNING ENVELOPE, PHOTO, AND TIMED LYRICS ---------- */
   let currentLyricIndex = 0;
+
   const timedLyrics = [
     { time: 0, text: "Mujhe" }, { time: 1, text: "jo" }, { time: 2, text: "hua hai" },
     { time: 3, text: "iski" }, { time: 4, text: "na dawa hai" }, { time: 5, text: "kisi ne" },
@@ -529,9 +692,11 @@
   ];
 
   function openEnvelope(){
-    const env = document.getElementById('envWrap');
+    const env = document.getElementById('env');
     if(env.classList.contains('burning')) return; 
     env.classList.add('burning');
+
+    const envRect = env.getBoundingClientRect();
 
     shakeScreen();
     flashScreen('flare', 500);
@@ -544,6 +709,8 @@
       burnSound.currentTime = 0;
       burnSound.volume = 0.8;
       burnSound.play().catch(e => console.log("Burn sound blocked", e));
+      
+      // AUTO STOP BURN SOUND AFTER 3.5 SECONDS
       setTimeout(() => {
         let bVol = burnSound.volume;
         const bFade = setInterval(() => {
@@ -561,14 +728,19 @@
       }, 50);
     }
 
-    // Unleash the dust explosion
-    generateMassiveDustExplosion();
+    // High intensity fire emitters
+    const emberInterval = setInterval(() => spawnEmbers(envRect, 8), 100);
+    const smokeInterval = setInterval(() => spawnSmoke(envRect, 2), 200);
+
     setTimeout(() => flashScreen('flare', 450), 1600);
 
     setTimeout(() => {
+      clearInterval(emberInterval);
+      clearInterval(smokeInterval);
       env.style.display = 'none'; 
       document.getElementById('vignette').classList.remove('intensify');
-      flashScreen('white-cut', 800);
+
+      flashScreen('white-cut', 700);
 
       setTimeout(() => {
         if(song2) {
@@ -581,10 +753,11 @@
             else { clearInterval(fadeIn); song2.volume = 1; }
           }, 50);
         }
+
         currentLyricIndex = 0;
         document.getElementById('photoPane').classList.add('show');
       }, 220);
-    }, 3000);
+    }, 3500);
   }
 
   function closePhoto(){
@@ -613,7 +786,7 @@
     }
 
     setTimeout(() => {
-      const env = document.getElementById('envWrap');
+      const env = document.getElementById('env');
       env.style.display = 'block';
       env.classList.remove('burning');
     }, 1000);
@@ -634,25 +807,31 @@
     const container = document.getElementById('lyrics-container');
     const word = document.createElement('div');
     word.className = 'edit-lyric';
+
     word.innerText = Math.random() > 0.5 ? text.toUpperCase() : text.toLowerCase();
-    
+
     const fonts = ['var(--script)', 'var(--serif)', 'var(--sans)'];
     word.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
+
     const colors = ['#ffffff', '#ffb6c1', '#fce4ec', 'var(--gold)'];
     word.style.color = colors[Math.floor(Math.random() * colors.length)];
-    
+
     word.style.fontSize = (Math.random() * 20 + 35) + 'px';
     word.style.setProperty('--rot', (Math.random() * 20 - 10) + 'deg');
+
     const xPos = Math.random() > 0.5 ? (Math.random() * 25 + 5) : (Math.random() * 25 + 70);
     const yPos = (Math.random() * 70 + 15);
     word.style.left = xPos + 'vw';
     word.style.top = yPos + 'vh';
+
     container.appendChild(word);
 
-    setTimeout(() => { if(word.parentNode) word.parentNode.removeChild(word); }, 3500);
+    setTimeout(() => {
+      if(word.parentNode) word.parentNode.removeChild(word);
+    }, 3500);
   }
 
-  /* ---------- HOLD-TO-REVEAL SECRET ---------- */
+  /* ---------- HOLD-TO-REVEAL SECRET (ON PHOTO) ---------- */
   (function(){
     const trigger = document.getElementById('secretTrigger');
     const overlay = document.getElementById('secretOverlay');
@@ -668,6 +847,7 @@
         if(song2 && !song2.paused) song2.volume = 0.15;
       }, 1000);
     }
+
     function endHold(){
       clearTimeout(holdTimer);
       trigger.classList.remove('holding');
@@ -677,6 +857,7 @@
         revealed = false;
       }
     }
+
     trigger.addEventListener('pointerdown', startHold);
     window.addEventListener('pointerup', endHold);
     trigger.addEventListener('pointerleave', endHold);
