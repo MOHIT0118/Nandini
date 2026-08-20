@@ -18,7 +18,7 @@
     --gold-glow: rgba(212, 175, 55, 0.4);
     --crimson: #7a1523;
     --crimson-glow: rgba(122, 21, 35, 0.45);
-    --parchment: #fcf8f2;
+    --parchment: #fdfaf6;
 
     --serif: 'Cormorant Garamond', serif;
     --script: 'Caveat', cursive;
@@ -118,7 +118,6 @@
 
   /* ---------- INSTANT SVG GOLD HEART BUTTON ---------- */
   #cover .wrap { text-align: center; }
-  
   .css-heart-btn {
     width: 140px; height: 140px; margin: 0 auto 35px; border-radius: 50%;
     overflow: hidden; cursor: pointer; position: relative;
@@ -130,25 +129,13 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .css-heart-btn:active { transform: scale(0.92); box-shadow: 0 0 20px rgba(212, 175, 55, 0.5), inset 0 0 40px rgba(0,0,0,0.9); }
-  
   .heart-svg {
-    width: 65px; height: 65px;
-    fill: url(#gold-gradient);
+    width: 65px; height: 65px; fill: url(#gold-gradient);
     filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.6));
     animation: heartbeat 2.4s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.15); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.15); }
-  }
-
-  @keyframes gentle-float { 
-    0% { transform: translateY(0px); } 
-    100% { transform: translateY(-10px); } 
-  }
+  @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } }
+  @keyframes gentle-float { 0% { transform: translateY(0px); } 100% { transform: translateY(-10px); } }
 
   h1.title { font-weight: 400; font-size: clamp(48px, 10vw, 90px); letter-spacing: 0.05em; color: var(--text-main); line-height: 1; }
   h1.title .italic { font-style: italic; color: var(--gold); }
@@ -172,76 +159,101 @@
   #burst.active .big { transform: scale(1); }
 
   /* ---------- CONFESSION VIDEO ---------- */
-  .content-wrapper { max-width: 700px; margin: 0 auto; width: 100%; padding: 0 20px; }
-  .video-container { width: 100%; max-width: 400px; margin: 0 auto 60px; border-radius: 4px; padding: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+  .content-wrapper { max-width: 700px; margin: 0 auto; width: 100%; padding: 0 20px; overflow-x: hidden; }
+  .video-container { width: 100%; max-width: 400px; margin: 0 auto 60px; border-radius: 4px; padding: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.6); position: relative; z-index: 10; }
   .video-container video { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; border-radius: 2px; background: #000; }
 
-  /* ---------- NEW: HANDWRITTEN SCRAPBOOK NOTES ---------- */
+  /* =========================================
+     NEW: PREMIUM SCRAPBOOK NOTES 
+     ========================================= */
   .notes-grid {
-    display: flex; flex-direction: column; align-items: center; gap: 40px; margin-bottom: 120px;
+    display: flex; flex-direction: column; width: 100%;
+    margin-bottom: 120px; padding-top: 20px;
   }
   
   .note-card {
-    background: var(--parchment);
-    color: #1a1a1d;
+    background-color: var(--parchment);
+    /* Lined Paper Texture */
+    background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(212, 175, 55, 0.15) 31px, rgba(212, 175, 55, 0.15) 32px);
+    background-size: 100% 32px;
+    background-position: 0 40px;
+    
+    color: #2a2a2e;
     font-family: var(--script);
-    font-size: clamp(22px, 5vw, 28px);
-    line-height: 1.45;
-    padding: 30px 35px;
-    width: 90%; max-width: 400px;
-    border-radius: 3px 3px 3px 15px;
-    box-shadow: 2px 10px 25px rgba(0,0,0,0.5), inset 0 0 40px rgba(212, 175, 55, 0.05);
+    font-size: clamp(24px, 5.5vw, 32px);
+    line-height: 32px; /* Matches the line paper spacing perfectly */
+    padding: 40px 30px 25px 45px;
+    width: 85%; max-width: 380px;
+    box-shadow: 4px 15px 35px rgba(0,0,0,0.6), inset 0 0 50px rgba(0,0,0,0.03);
     position: relative;
-    opacity: 0; transform: translateY(40px) scale(0.95);
+    opacity: 0; transform: translateY(50px) scale(0.9);
     transition: opacity 0.8s cubic-bezier(0.2, 1, 0.3, 1), transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    
+    /* Notebook Red Margin Line */
+    border-left: 3px solid rgba(122, 21, 35, 0.25);
+    border-radius: 2px 8px 8px 2px;
   }
   
-  .note-card.show {
-    opacity: 1; transform: translateY(0) rotate(var(--rot)) scale(1);
-  }
+  /* Staggered Placements */
+  .note-card:nth-child(odd) { align-self: flex-start; margin-left: 2%; --rot: -3deg; }
+  .note-card:nth-child(even) { align-self: flex-end; margin-right: 2%; margin-top: -30px; --rot: 4deg; }
+  .note-card:nth-child(3) { margin-top: -40px; --rot: -2deg; }
+  .note-card:nth-child(5) { margin-top: -20px; --rot: -4deg; }
+  
+  .note-card.show { opacity: 1; transform: translateY(0) rotate(var(--rot)) scale(1); }
 
-  /* Washi Tape Graphic on the notes */
+  /* Colored Washi Tape */
   .note-card::before {
-    content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-3deg);
-    width: 70px; height: 26px; background: rgba(255,255,255,0.45);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px);
-    border-radius: 1px;
+    content: ''; position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-4deg);
+    width: 80px; height: 28px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15); backdrop-filter: blur(2px); border-radius: 2px;
+  }
+  .note-card:nth-child(odd)::before { background: rgba(255, 182, 193, 0.65); transform: translateX(-50%) rotate(3deg); } /* Blush Pink */
+  .note-card:nth-child(even)::before { background: rgba(175, 212, 208, 0.65); transform: translateX(-50%) rotate(-5deg); } /* Mint Green */
+  .note-card:nth-child(3)::before { background: rgba(212, 175, 55, 0.55); } /* Pale Gold */
+
+  /* Premium CSS Stickers */
+  .sticker {
+    position: absolute; background-size: contain; background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); z-index: 5; pointer-events: none;
+  }
+  
+  /* Golden Star Sticker */
+  .sticker-star {
+    width: 45px; height: 45px; bottom: -15px; right: -10px; transform: rotate(15deg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E");
+  }
+  
+  /* Crimson Heart Sticker */
+  .sticker-heart {
+    width: 35px; height: 35px; top: 15px; right: 15px; transform: rotate(-10deg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237a1523'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
   }
 
+  /* Vintage Leaf Sticker */
+  .sticker-leaf {
+    width: 50px; height: 50px; bottom: 10px; left: -20px; transform: rotate(-45deg); opacity: 0.8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238b8c91'%3E%3Cpath d='M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66l.95-2.3c3.84-2.72 8.84-3.69 13.01-6.15C21.72 12.35 22 9.87 22 7c0-2.82-1.74-5-4.5-5C13.84 2 10 5 10 9c0 3.53 1.94 5 4.5 5c1.9 0 3.32-1.12 3.8-2.67C17.65 10.15 17.5 9.07 17 8z'/%3E%3C/svg%3E");
+  }
+
+  /* Final Signature Treatment */
   .note-card.signature {
-    background: transparent; color: var(--gold);
-    box-shadow: none; font-size: clamp(34px, 7vw, 42px);
-    text-align: center; margin-top: 20px;
+    background: transparent; color: var(--gold); border: none; align-self: center;
+    box-shadow: none; font-size: clamp(34px, 7vw, 42px); text-align: center; margin-top: 40px; margin-left: 0; margin-right: 0;
   }
   .note-card.signature::before { display: none; }
 
   /* =========================================
      REALISTIC 3D ENVELOPE & BURN
      ========================================= */
-  .envelope-section { text-align: center; margin-bottom: 100px; perspective: 1200px; }
+  .envelope-section { text-align: center; margin-bottom: 100px; perspective: 1200px; position: relative; z-index: 10; }
   .env-hint { font-family: var(--script); font-size: 28px; color: var(--text-muted); margin-bottom: 40px; }
   
-  .envelope {
-    position: relative; 
-    width: min(85vw, 360px); 
-    aspect-ratio: 1.5/1; 
-    margin: 0 auto;
-    cursor: pointer;
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease;
-  }
+  .envelope { position: relative; width: min(85vw, 360px); aspect-ratio: 1.5/1; margin: 0 auto; cursor: pointer; transform-style: preserve-3d; transition: transform 0.4s ease; }
   .envelope:hover { transform: translateY(-5px) rotateX(5deg); }
   
-  .env-body {
-    position: absolute; inset: 0; 
-    background: linear-gradient(135deg, #2b2b30 0%, #17171a 100%);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.5);
-    border-radius: 4px; overflow: hidden;
-  }
-  .env-body::before {
-    content: ''; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  }
+  .env-body { position: absolute; inset: 0; background: linear-gradient(135deg, #2b2b30 0%, #17171a 100%); box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.5); border-radius: 4px; overflow: hidden; }
+  .env-body::before { content: ''; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); }
 
   .flap-shadow-left { position: absolute; inset: 0; filter: drop-shadow(5px 0px 10px rgba(0,0,0,0.6)); pointer-events: none; }
   .flap-shadow-right { position: absolute; inset: 0; filter: drop-shadow(-5px 0px 10px rgba(0,0,0,0.6)); pointer-events: none; }
@@ -254,19 +266,13 @@
   .env-top { position: absolute; top: 0; left: 0; right: 0; height: 65%; background: linear-gradient(to bottom, #2e2e35, #222226); clip-path: polygon(0 0, 100% 0, 50% 100%); border-top: 1px solid rgba(255,255,255,0.05); }
 
   .wax-seal {
-    position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); 
-    width: 55px; height: 55px; border-radius: 50%; 
-    background: radial-gradient(circle at 30% 30%, #a31c2f, #7a1523, #4a0d15);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -4px 6px rgba(0,0,0,0.5); 
+    position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); width: 55px; height: 55px; border-radius: 50%; 
+    background: radial-gradient(circle at 30% 30%, #a31c2f, #7a1523, #4a0d15); box-shadow: 0 6px 15px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -4px 6px rgba(0,0,0,0.5); 
     display: flex; align-items: center; justify-content: center; z-index: 5; border: 2px solid #5a0f19;
   }
   .wax-seal::after { content: 'N'; font-family: var(--serif); font-style: italic; color: #ffb8c3; font-size: 26px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); opacity: 0.9; }
 
-  .fire-sweep {
-    position: absolute; inset: -50%; pointer-events: none; z-index: 6; opacity: 0;
-    background: radial-gradient(circle at center, transparent 20%, #ff5a00 40%, #ff0000 60%, #000 80%);
-    mix-blend-mode: color-dodge;
-  }
+  .fire-sweep { position: absolute; inset: -50%; pointer-events: none; z-index: 6; opacity: 0; background: radial-gradient(circle at center, transparent 20%, #ff5a00 40%, #ff0000 60%, #000 80%); mix-blend-mode: color-dodge; }
 
   .envelope.burning { animation: realistic-shrivel 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; pointer-events: none; }
   .envelope.burning .wax-seal { animation: melt-seal 1.5s forwards; }
@@ -297,21 +303,18 @@
   .photo-modal.show { opacity: 1; pointer-events: auto; }
 
   .polaroid-card {
-    position: relative; width: min(90vw, 380px); aspect-ratio: 9/16; background: #000; border: 4px solid var(--parchment); border-radius: 8px;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.2); transform: translateY(60px) scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 10;
-    cursor: pointer; touch-action: none;
+    position: relative; width: min(90vw, 380px); aspect-ratio: 9/16; background: #000; border: 4px solid #fdfaf6; border-radius: 8px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.2); transform: translateY(60px) scale(0.9); transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); z-index: 10; cursor: pointer; touch-action: none;
   }
   .photo-modal.show .polaroid-card { transform: translateY(0) scale(1); }
   .polaroid-card.holding { transform: scale(0.95) !important; transition: transform 0.3s ease; }
   .polaroid-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; opacity: 0.85; transition: opacity 0.5s ease; }
 
-  .hold-hint {
-    position: absolute; bottom: 40px; font-family: var(--sans); color: rgba(255,255,255,0.6);
-    font-size: 14px; letter-spacing: 2px; text-transform: uppercase; pointer-events: none; opacity: 0; z-index: 51;
-  }
+  .hold-hint { position: absolute; bottom: 40px; font-family: var(--sans); color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; pointer-events: none; opacity: 0; z-index: 51; }
   .photo-modal.show .hold-hint { animation: fade-hint 4s ease forwards 1.5s; }
   @keyframes fade-hint { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
 
+  /* BEAUTIFUL FLOATING LYRICS TYPOGRAPHY */
   #lyrics-container { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
   .edit-lyric { position: absolute; white-space: nowrap; text-align: center; text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 25px currentColor; font-weight: 500; opacity: 0; animation: float-lyric 3.5s cubic-bezier(0.2, 1, 0.4, 1) forwards; }
   @keyframes float-lyric {
@@ -340,7 +343,7 @@
 </head>
 <body>
 
-<!-- Setup the glowing gold gradient for the heart -->
+<!-- Setup the glowing gold gradient for the heart SVG -->
 <svg width="0" height="0">
   <defs>
     <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -351,7 +354,7 @@
   </defs>
 </svg>
 
-<!-- Audio Players (Note the 'loop' added to song2) -->
+<!-- Audio Players -->
 <audio id="bgMusic" loop>
   <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -380,7 +383,7 @@
   <section class="screen active" id="cover">
     <div class="wrap">
       
-      <!-- New Instant CSS Heart Button -->
+      <!-- Instant SVG Gold Heart Button -->
       <div class="css-heart-btn" onclick="go('ask')">
         <svg class="heart-svg" viewBox="0 0 32 29.6">
           <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/>
@@ -419,16 +422,44 @@
         <video id="confessionVideo" src="trust-me.mp4" controls playsinline preload="metadata"></video>
       </div>
 
-      <!-- New: Handwritten Scrapbook Notes -->
+      <!-- Handwritten Scrapbook Notes -->
       <div class="notes-grid" id="notesGrid">
-        <div class="note-card" style="--rot: -2deg">I'm not doing this casually. I'm fully invested in you.</div>
-        <div class="note-card" style="--rot: 3deg">I like you more than any girl I've known, and I genuinely believe nothing between us will ever go to waste.</div>
-        <div class="note-card" style="--rot: -1deg">The only thing I want—whether this becomes a relationship or even just a friendship—is that we are always honest and truthful with each other.</div>
-        <div class="note-card" style="--rot: 2deg">Nandini, I'm ready to give my all to this. I just want one chance. One genuine chance to show you that my intentions are real.</div>
-        <div class="note-card" style="--rot: -3deg">You don't have to be completely sure about me right now. Just give us a chance to know each other, and let things speak for themselves.</div>
-        <div class="note-card" style="--rot: 1deg">If after that you still feel I'm not the person you want, I will respect your decision. It will hurt, but at least I'll know I gave it everything I had.</div>
-        <div class="note-card" style="--rot: -2deg">You can leave if you want to, but before you do, just give me one chance.</div>
-        <div class="note-card signature" style="--rot: 0deg">And remember one thing — I love you more than you probably know.</div>
+        
+        <div class="note-card">
+          I'm not doing this casually. I'm fully invested in you.
+          <div class="sticker sticker-star"></div>
+        </div>
+        
+        <div class="note-card">
+          I like you more than any girl I've known, and I genuinely believe nothing between us will ever go to waste.
+          <div class="sticker sticker-leaf"></div>
+        </div>
+        
+        <div class="note-card">
+          The only thing I want—whether this becomes a relationship or even just a friendship—is that we are always honest and truthful with each other.
+        </div>
+        
+        <div class="note-card">
+          Nandini, I'm ready to give my all to this. I just want one chance. One genuine chance to show you that I'm serious about you and that my intentions are real.
+          <div class="sticker sticker-heart"></div>
+        </div>
+        
+        <div class="note-card">
+          You don't have to be completely sure about me right now. Just give us a chance to know each other, and let things speak for themselves.
+        </div>
+        
+        <div class="note-card">
+          If after that you still feel I'm not the person you want, I will respect your decision. It will hurt, but at least I'll know I gave it everything I had.
+        </div>
+        
+        <div class="note-card">
+          You can leave if you want to, but before you do, just give me one chance.
+        </div>
+        
+        <div class="note-card signature" style="--rot: 0deg">
+          And remember one thing — I love you more than you probably know.
+        </div>
+
       </div>
 
       <!-- 3D Realistic Envelope -->
@@ -452,23 +483,23 @@
 <!-- Photo & Lyric Modal -->
 <div class="photo-modal" id="photoPane">
   <button class="close-btn" onclick="closePhoto()">×</button>
-
   <div class="polaroid-card" id="secretTrigger">
     <img src="nandini.jpg" alt="You">
   </div>
-
   <div id="lyrics-container"></div>
   <div class="hold-hint">Press and hold</div>
 </div>
 
 <div class="playfield" id="playfield"></div>
 
-<!-- Hold-to-reveal overlay -->
 <div class="secret-overlay" id="secretOverlay">
   <p class="secret-message">I've wanted to tell you this since the day we met.</p>
 </div>
 
 <script>
+  /* ---------- CUSTOM LOOP CUTTER (Change this if song drops out early) ---------- */
+  const SONG_END_TIME = 29.5; 
+
   /* ---------- GENERATE DENSE GOLDEN STARDUST ---------- */
   (function(){
     const layer = document.getElementById('ambient');
@@ -500,7 +531,7 @@
       }
     });
     if(id === 'burst') triggerBurst();
-    if(id === 'gallery') setTimeout(revealNotes, 800); // Trigger the handwritten notes
+    if(id === 'gallery') setTimeout(revealNotes, 600); // Trigger notes reveal
     window.scrollTo({top:0, behavior:'instant'});
   }
 
@@ -588,14 +619,11 @@
     notesRevealed = true;
     const notes = document.querySelectorAll('.note-card');
     notes.forEach((note, index) => {
-      // Makes them pop up one by one with a delay
-      setTimeout(() => {
-        note.classList.add('show');
-      }, index * 400 + 400); 
+      setTimeout(() => { note.classList.add('show'); }, index * 350 + 200); 
     });
   }
 
-  /* ---------- CINEMATIC HELPERS: shake, flash, smoke, ash ---------- */
+  /* ---------- CINEMATIC HELPERS ---------- */
   function flashScreen(type, duration){
     const flash = document.getElementById('screenFlash');
     flash.classList.remove('flare', 'white-cut');
@@ -765,12 +793,15 @@
     }, 1000);
   }
 
-  /* Handle Song Looping & Lyrics */
+  /* SEAMLESS LOOP & LYRIC ENGINE */
   if (song2) {
     song2.addEventListener('timeupdate', () => {
-      // If the song loops back to the start, reset the lyrics
-      if (song2.currentTime < 1 && currentLyricIndex > 10) {
-        currentLyricIndex = 0;
+      
+      // Forces the song to loop immediately before it hits dead silence
+      if (song2.currentTime >= SONG_END_TIME || (song2.duration && (song2.duration - song2.currentTime < 0.2))) {
+        song2.currentTime = 0;
+        song2.play();
+        currentLyricIndex = 0; // Reset lyrics instantly
         document.getElementById('lyrics-container').innerHTML = ''; 
       }
       
